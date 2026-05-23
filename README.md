@@ -14,7 +14,7 @@ Faro is a multi-agent orchestration system for [Claude Code CLI](https://docs.an
 
 Built and used in production over 82 days. 437 sessions analyzed. 989 MB of logs audited.
 
-This repository contains the methodology, agent definitions, workflow contracts, and real metrics from production use. The system runs inside an Obsidian vault with EcoDB and Eco Relay as infrastructure — those are separate projects.
+This repository contains the methodology, agent definitions, workflow contracts, and real metrics from production use. The system runs inside an Obsidian vault with [EcoDB](https://github.com/josortmel/EcoDB) and [Eco Relay](https://github.com/josortmel/eco-relay) as infrastructure.
 
 **Recommended base:** [Obsidian](https://obsidian.md/) vault. Faro's agents, workflows, templates, and session artifacts are structured as an Obsidian vault with wiki-links and frontmatter. The vault is the single source of truth for the entire system.
 
