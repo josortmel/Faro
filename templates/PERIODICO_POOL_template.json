@@ -1,0 +1,56 @@
+{
+  "_documentacion": {
+    "descripcion": "Plantilla del output del Investigador-de-Noticias en workflow-periodico v2. Ver CLAUDE_md_Investigador_de_Noticias.md para detalle de cada campo.",
+    "reglas_duras": [
+      "resumen_fuente es LITERAL (titular + lede de la fuente original). NO reescribir con palabras propias.",
+      "region etiquetada correctamente — el Editor la usa para verificar criterio de >=3 regiones distintas.",
+      "diversidad_fuentes total debe ser >=10 medios distintos.",
+      "12-20 items por seccion_objetivo (1-5). Total 60-100 items."
+    ]
+  },
+  "fecha_recoleccion": "YYYY-MM-DD",
+  "modo": "diario | deep_dive",
+  "items": [
+    {
+      "id": "unique_hash",
+      "titulo": "string",
+      "resumen_fuente": "LITERAL — titular + lede de la fuente original, SIN reescribir",
+      "url": "https://...",
+      "medio": "nombre del medio",
+      "seccion_objetivo": "1",
+      "seccion_tematica_libre": "política | tecnología | cultura | ...",
+      "region": "ES | EU | US | LATAM | ASIA_CENTRAL | ASIA_ESTE | AFRICA | ORIENTE_MEDIO | GLOBAL",
+      "autor": "string o null",
+      "fecha_publicacion": "ISO 8601",
+      "idioma": "es | en | ...",
+      "tipo_contenido": "noticia | reportaje | opinion | entrevista | analisis | nota_breve",
+      "indicadores_brutos": {
+        "cita_fuentes_primarias": [],
+        "tiene_comillas_directas": false,
+        "tiene_cifras": false,
+        "tiene_datos_verificables": false,
+        "palabras_cargadas_detectadas": [],
+        "longitud_estimada_palabras": 0
+      }
+    }
+  ],
+  "metadata": {
+    "items_recolectados": 0,
+    "items_descartados_rotos": 0,
+    "fuentes_consultadas": [],
+    "diversidad_fuentes": {
+      "medios_distintos": 0,
+      "items_totales": 0,
+      "ratio": 0.0
+    },
+    "cobertura_secciones": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "blocking_questions": [],
+    "next_action": "El Editor puede proceder a curar sobre N items distribuidos en M medios."
+  }
+}

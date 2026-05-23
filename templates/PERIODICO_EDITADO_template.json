@@ -1,0 +1,78 @@
+{
+  "_documentacion": {
+    "descripcion": "Estructura del periódico editado + etiquetado + analizado. Output compuesto de Editor + Crítico-de-Fuentes + Analista en workflow-periodico v2.",
+    "reglas_duras": [
+      "criterios_cumplidos.perspectivas_regiones debe tener >=3 regiones (principio rector 4).",
+      "criterios_cumplidos.fuera_mainstream debe ser true (al menos 1 noticia fuera del mainstream).",
+      "criterios_cumplidos.todas_con_fuente_verificable debe ser true.",
+      "Cada noticia tiene fiabilidad etiquetada por el Crítico.",
+      "Cada noticia tiene contexto_historico con recuerdos_relacionados concretos (principio rector 3: no inventar narrativa sin respaldo).",
+      "Si hay narrativa_del_dia del Analista, debe tener recuerdos_relacionados >=2 noticias del histórico."
+    ]
+  },
+  "fecha": "YYYY-MM-DD",
+  "criterios_cumplidos": {
+    "perspectivas_regiones": ["ES", "LATAM", "ASIA_ESTE"],
+    "fuera_mainstream": true,
+    "todas_con_fuente_verificable": true
+  },
+  "secciones": {
+    "1_no_telediario": [
+      {
+        "noticia_id": "unique_hash",
+        "titulo_editado": "string (puede diferir del título fuente si el Editor sintetiza)",
+        "sintesis": "string — síntesis del Editor preservando lo importante",
+        "fuente_primaria_url": "https://...",
+        "medio": "string",
+        "region": "ES | LATAM | ...",
+        "fiabilidad": {
+          "tipo_fuente": "DIRECTA | SECUNDARIA | TERCIARIA",
+          "fiabilidad": "ALTA | MEDIA | BAJA | NO_VERIFICABLE",
+          "nota_fiabilidad": "string — obligatoria si MEDIA/BAJA/NO_VERIFICABLE"
+        },
+        "analisis_historico": {
+          "patron": "continuidad | ruptura | relacion_indirecta | silencio | primera_vez",
+          "contexto_historico": "string — con trazabilidad",
+          "recuerdos_relacionados": ["id_recuerdo_1", "id_recuerdo_2"],
+          "tripletas_relacionadas": []
+        }
+      }
+    ],
+    "2_ciencia": [],
+    "3_empresas_tech": [],
+    "4_mercados": {
+      "compacto": "string — resumen de 1 párrafo",
+      "indices": {
+        "IBEX_35": {"cierre": 0.0, "variacion_pct": 0.0},
+        "SP_500": {"cierre": 0.0, "variacion_pct": 0.0}
+      },
+      "acciones": []
+    },
+    "5_politica": [],
+    "6_historia_larga": {
+      "tema": "string",
+      "desarrollo": "string — 3-5 párrafos",
+      "seleccionado_entre": ["noticia_id_1", "noticia_id_2"],
+      "razon_seleccion": "string"
+    }
+  },
+  "cross_referencias": [
+    {
+      "noticia_a": "id",
+      "noticia_b": "id",
+      "relacion": "string — por qué están relacionadas"
+    }
+  ],
+  "descartadas": [
+    {
+      "item_id": "string",
+      "razon": "string — por qué no se incluyó"
+    }
+  ],
+  "narrativa_del_dia": {
+    "_obligatorio_si_presente": "recuerdos_relacionados debe tener >=2 items del histórico",
+    "titular": "string",
+    "desarrollo": "string",
+    "recuerdos_relacionados": []
+  }
+}
