@@ -3,7 +3,7 @@ name: workflow-evolucion
 description: |
   Orchestrated workflow for studying, improving, or refactoring tools and code that already exist in the system. Use it whenever the user asks to review, improve, optimize, refactor, audit, or analyze something already built — existing MCPs, scripts, configurations, current workflows. Also activates when the user says "this isn't working well", "it's slow", "it's messy", "needs cleanup", or "I want a second version of X". The difference from Construction is that here there is existing code to start from. The difference from Design is that here we go straight to modifying — if the task is critical, workflow-diseño is launched first to produce Brief+Spec+Plan.
 metadata:
-  version: "4.0"
+  version: "4.1"
   estreno_v1: 2026-04-16
   endurecido_v2: 2026-04-18
   agent_teams_v3: 2026-04-26
@@ -246,6 +246,17 @@ Prima prevails → the user if unresolved
 **Cost of idle relay peers**: zero tokens.
 
 **No Security_Adversarial**: evolution is tactical improvement, not building from scratch. If the evolution is critical (touches schema, architecture) → goes to workflow-diseño first, where there is a full adversarial.
+
+### Incremental dispatch — ZERO IDLE PEERS (v4.1, propagated from construction v5.2)
+
+**Code_Adversarial and Verifier do NOT wait for all changes to be complete.** As soon as a change is implemented by the Executor, the Auditor dispatches Code_Adversarial to review that change immediately — while the Executor continues with the next change. The Verifier enters as soon as Code_Adversarial delivers its report.
+
+This is a hard rule, not a suggestion. Every minute a reviewer sits idle while completed code exists unreviewed is wasted.
+
+**Anti-patterns to avoid:**
+1. "I'll dispatch Code_Adversarial when all changes are done." NO. Dispatch on the FIRST completed change.
+2. "I'll dispatch the Verifier when Code_Adversarial finishes ALL changes." NO. Dispatch Verifier on the first change Code_Adversarial finishes reviewing.
+3. "This change is just a rename / cleanup / not enough to review." NO. If code changed and was approved, it gets reviewed. The pipeline is mechanical: completed → reviewed. No judgment call.
 
 ---
 
@@ -607,3 +618,4 @@ For **critical** evolution (with prior design): same contract as critical constr
   12. **Explicit escalation to workflow-diseño** when Auditor detects that complexity exceeds a simple evolution.
 - **v3.0 (2026-04-26)**: migration to Agent Teams by Prima. Auditor Opus, Executor Sonnet, Verifier Sonnet as persistent teammates. Haiku Investigator on standby. Direct communication. Explicit chain of command. Escalation to workflow-construccion for bridges.
 - **v4.0 (2026-05-22)**: relay rewrite. Agent Teams → Relay. bisagra → gate. eco_memory/eco_graph → EcoDB. Agent name translations applied. Python spawn blocks removed. All content translated to English.
+- **v4.1 (2026-05-29)**: ZERO IDLE PEERS enforcement propagated from construction v5.2. Code_Adversarial and Verifier dispatch incrementally per change, not after all changes complete. Three anti-patterns added. Agent CLAUDE.md paths corrected to English directory names.

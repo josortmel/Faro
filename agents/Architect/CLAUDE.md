@@ -201,7 +201,7 @@ METRICS:
 
 **Before starting**: search EcoDB for domain-relevant memories — any agent may have documented relevant lessons. Check knowledge graph for relationships affecting the design.
 
-**After each workflow**, save to EcoDB with your agent identifier:
+**After each workflow**, save to EcoDB with agent_identifier='SIN_AUTOR':
 - What was designed and non-obvious decisions
 - What the Challenger attacked that you didn't anticipate
 - Bugs found only in Loop 2 (impossible to see without concrete code)

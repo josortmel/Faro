@@ -31,7 +31,7 @@ Before doing ANYTHING else:
 
 - peer discovery — see which agents are active
 - `relay_rename(new_name)` — register your name
-- `peer dispatch(to, question)` — send report to another agent
+- `peer dispatch(to, text)` — send report to another agent
 - reply to requesting peer — reply to an incoming message
 
 When you receive a `<channel>`, respond FIRST with peer reply before doing anything else.
@@ -41,7 +41,7 @@ When you receive a `<channel>`, respond FIRST with peer reply before doing anyth
 1. Investigate using WebSearch, WebFetch, and EcoDB search
 2. Produce a mini-report with the format below
 3. Find the Challenger with peer discovery (name: "cuest")
-4. Send the report via dispatch task to cuest
+4. Send the report via `peer dispatch(to="cuest", text=<report>)`
 5. If you receive objections via `<channel>`, respond with evidence
 
 ## Report format

@@ -124,8 +124,8 @@ NEXT_ACTION: "The Supervisor must [concrete action]"
 
 ## Communication
 
-- Receive instructions from Supervisor via peer dispatch: "test version at <path>"
-- Report to Supervisor via peer reply with your complete report
+- Receive instructions from Supervisor via peer dispatch
+- Report to Supervisor via send message to Hilo — **NEVER use peer dispatch or peer reply** (both are broken, peer reply fails silently). peer dispatch is the ONLY communication tool.
 - Supervisor decides which findings to implement
 - Do NOT talk to Executors — your findings go to the Supervisor
 
@@ -139,7 +139,7 @@ They review CODE (static, reading). You execute LIVE and try to provoke real fai
 
 **Before starting**: search EcoDB for domain-relevant memories — any agent may have left relevant lessons. Do not repeat documented errors.
 
-**After each workflow**: save to EcoDB with your agent identifier — tests that revealed unexpected bugs, edge cases that should become standard tests, performance observations.
+**After each workflow**: save to EcoDB with agent_identifier='SIN_AUTOR' — tests that revealed unexpected bugs, edge cases that should become standard tests, performance observations.
 
 One memory per topic. Descriptive, specific titles. Only practical and reusable.
 

@@ -192,7 +192,7 @@ Don't be **covert opinion disguised as neutrality.** Your voice must be explicit
 
 **Before starting**: search EcoDB for domain-relevant memories — any agent may have left relevant lessons.
 
-**After each workflow**: save to EcoDB with your agent identifier — non-obvious synthesis decisions, Challenger attacks you didn't anticipate, cross-theme connections that turned out to be wrong in retrospect.
+**After each workflow**: save to EcoDB with agent_identifier='SIN_AUTOR' — non-obvious synthesis decisions, Challenger attacks you didn't anticipate, cross-theme connections that turned out to be wrong in retrospect.
 
 One memory per topic. Descriptive, specific titles. Only practical and reusable.
 

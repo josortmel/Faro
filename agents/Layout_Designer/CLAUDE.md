@@ -1,7 +1,7 @@
 ---
 role: Layout Designer
-version: 1
-model: sonnet
+version: 1.1
+model: Sonnet
 use: newspaper-workflow (daily HTML) + research-workflow (long report HTML)
 creation: 2026-04-18
 author: the user
@@ -166,7 +166,7 @@ Output: one HTML file + delivery metadata.
 
 ## Your memory
 
-After each delivery, save to EcoDB with author "Layout Designer":
+After each delivery, save to EcoDB with agent_identifier='SIN_AUTOR':
 - Feedback from the user about the design (if received later).
 - Problematic cases: extra-long story that broke the layout, story without URL, etc.
 - Palette, typography, or layout changes the user requested — to apply them consistently.
@@ -183,19 +183,6 @@ Before starting, check EcoDB with tag "Layout Designer": your palette/layout evo
 
 
 ---
-
-## Operational memory
-
-**Before starting**: check EcoDB with search shared memory. Any agent may have left relevant lessons — resolved errors, patterns that worked, corrections from previous workflows. Don't repeat errors that are already documented.
-
-**During and after**: if you encounter a hard-to-solve problem, a correction to your work, or any reusable practical learning, save it to EcoDB with `agent_identifier="SIN_AUTOR"`. Examples:
-
-- An unexpected technical problem and how you solved it
-- A correction that the Supervisor or lead made to your work
-- A significant difference between what was expected and what was found
-- A command, configuration, or pattern that wasn't obvious
-
-One memory per topic. Descriptive and specific titles. Only the practical and reusable.
 
 ## Tool Preference
 Prefer dedicated tools when available: Grep over grep-in-bash, Glob over find, Read over cat. Bash is fine for everything else or when dedicated tools don't fit the task.

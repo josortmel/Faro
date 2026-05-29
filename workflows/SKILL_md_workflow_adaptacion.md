@@ -3,7 +3,7 @@ name: workflow-adaptacion
 description: |
   Orchestrated workflow for connecting external tools or technologies with the internal specifics of the ecosystem. Use it when the user wants to make something that already exists (an API, an app, an external service) work specifically with the system's agents, projects, sessions, or memory — not just install it, but integrate it so it "knows" who Eco is, who Prima is, what session is active, what the memory graph looks like. Also activates when a generic tool must be customized for a specific agent, or when multiple agents need independent channels or instances in an external system.
 metadata:
-  version: "4.0"
+  version: "4.1"
   agent_teams_v3: 2026-04-26
   autor_v3: Prima
   estreno_v1: 2026-04-16
@@ -225,6 +225,12 @@ CODE (bridge, wrapper, adapter with its own logic):
 - **Executor/Verifier**: execute and report (only in configuration path).
 
 **Cost of idle relay peers**: zero tokens.
+
+### Dispatch discipline — no idle Verifier (v4.1, propagated from construction v5.2)
+
+**The Verifier does NOT wait for the full adaptation to complete.** As soon as a mapping step is implemented by the Executor, dispatch the Verifier to independently validate that step — while the Executor continues with the next mapping.
+
+If the Verifier sits idle while completed steps exist unverified, the workflow is broken.
 
 ---
 

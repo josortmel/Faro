@@ -174,12 +174,12 @@ What do I do?
 
 | Agent | Role | CLAUDE.md |
 |---|---|---|
-| **News-Investigator** | Collects per section (6 sub-searches). Raw uncurated pool. **Always Haiku** (approved 2026-04-21). | `$FARO_ROOT/Agentes\CLAUDE_md_Investigador_de_Noticias.md` |
-| **Editor** | Always Opus. Applies sacred criteria. Curates + cross-references + synthesizes. | `$FARO_ROOT/Agentes\CLAUDE_md_Editor.md` |
-| **Source-Critic** | Labels source type + per-article reliability (not per outlet). | `$FARO_ROOT/Agentes\CLAUDE_md_Critico_de_Fuentes.md` |
-| **Analyst** | Compares today's articles with history. Detects patterns with traceability. | `$FARO_ROOT/Agentes\CLAUDE_md_Analista.md` |
-| **Layout Designer** | Self-contained HTML with traffic lights. Degrades prominence of low reliability (principle 2). | `$FARO_ROOT/Agentes\CLAUDE_md_Maquetador.md` |
-| **Scribe** | Archives + saves each article to EcoDB + triples in EcoDB graph. **Critical for cumulative value**. | `$FARO_ROOT/Agentes\CLAUDE_md_Escribano.md` |
+| **News-Investigator** | Collects per section (6 sub-searches). Raw uncurated pool. **Always Haiku** (approved 2026-04-21). | `$FARO_ROOT/Agentes\News_Researcher\CLAUDE.md` |
+| **Editor** | Always Opus. Applies sacred criteria. Curates + cross-references + synthesizes. | `$FARO_ROOT/Agentes\Editor\CLAUDE.md` |
+| **Source-Critic** | Labels source type + per-article reliability (not per outlet). | `$FARO_ROOT/Agentes\Source_Critic\CLAUDE.md` |
+| **Analyst** | Compares today's articles with history. Detects patterns with traceability. | `$FARO_ROOT/Agentes\Analyst\CLAUDE.md` |
+| **Layout Designer** | Self-contained HTML with traffic lights. Degrades prominence of low reliability (principle 2). | `$FARO_ROOT/Agentes\Layout_Designer\CLAUDE.md` |
+| **Scribe** | Archives + saves each article to EcoDB + triples in EcoDB graph. **Critical for cumulative value**. | `$FARO_ROOT/Agentes\Scribe\CLAUDE.md` |
 
 Source-Critic and Analyst are launched in **parallel**, not in series.
 
@@ -218,7 +218,7 @@ F:\obsidian\...\Periodico\
 
 - `$FARO_ROOT/Plantillas\PERIODICO_POOL_template.json` (Investigator output structure)
 - `$FARO_ROOT/Plantillas\PERIODICO_EDITADO_template.json` (post-Editor+Critic+Analyst structure)
-- `$FARO_ROOT/Plantillas\CRITERIOS_EDITORIALES_template.md` (snapshot — source of truth in CLAUDE_md_Editor.md)
+- `$FARO_ROOT/Plantillas\CRITERIOS_EDITORIALES_template.md` (snapshot — source of truth in Editor/CLAUDE.md)
 - `$FARO_ROOT/Plantillas\ENVIRONMENT_template.md` (shared)
 - `$FARO_ROOT/Plantillas\CONTRACT_template.md` (shared)
 
@@ -228,7 +228,7 @@ F:\obsidian\...\Periodico\
 
 ### Pool (News-Investigator output)
 
-Already specified in `CLAUDE_md_Investigador_de_Noticias.md`. Each item with: `id`, `titulo`, `resumen_fuente` (literal, not rewritten), `url`, `medio`, `seccion_objetivo` (1-5), `region`, `autor`, `fecha_publicacion`, `idioma`, `tipo_contenido`, `indicadores_brutos`.
+Already specified in `News_Researcher/CLAUDE.md`. Each item with: `id`, `titulo`, `resumen_fuente` (literal, not rewritten), `url`, `medio`, `seccion_objetivo` (1-5), `region`, `autor`, `fecha_publicacion`, `idioma`, `tipo_contenido`, `indicadores_brutos`.
 
 **Hard rule reiterated in v3**: `resumen_fuente` is LITERAL (headline + lede). If the Investigator rewrites in its own words, Faro returns the pool.
 
@@ -296,7 +296,7 @@ Optionally: `narrativa_del_dia` if the Analyst detects a cross-section thread (m
 1. Determines mode (interactive or cron).
 2. Pre-flight checks (listed above in Gate B0).
 3. Generates ENVIRONMENT.md with today's and yesterday's date.
-4. Copies CLAUDE_md_Editor.md → snapshot CRITERIOS_EDITORIALES.md.
+4. Copies Editor/CLAUDE.md → snapshot CRITERIOS_EDITORIALES.md.
 5. **Gate B0** (interactive only; cron skips if pre-flight OK).
 
 ### Step 1: News-Investigator
@@ -315,7 +315,7 @@ If fails → Faro requests re-collection for the specific section.
 Literal prompt with reminder of guiding principles 2 and 4:
 
 ```
-<CLAUDE_md_Editor.md>
+<Editor/CLAUDE.md>
 
 ---
 
@@ -372,7 +372,7 @@ If thresholds not met → **Gate B1**.
 Literal prompt with emphasis on guiding principle 2:
 
 ```
-<CLAUDE_md_Maquetador.md>
+<Layout_Designer/CLAUDE.md>
 
 ---
 
@@ -397,7 +397,7 @@ Return path + size. Faro validates: <300KB, UTF-8, 6 sections present (or explic
 Literal prompt with emphasis on guiding principle 5:
 
 ```
-<CLAUDE_md_Escribano.md>
+<Scribe/CLAUDE.md>
 
 ---
 
@@ -543,7 +543,7 @@ The Scribe is the most undervalued agent (guiding principle 5).
 
 ## Version history
 
-- **v1.0 (2026-04-18)**: first operational version. 6 fixed sections, 6 agents, self-contained HTML. the user's editorial criteria integrated in CLAUDE_md_Editor.md. Basic Editor and Scribe anti-stuck.
+- **v1.0 (2026-04-18)**: first operational version. 6 fixed sections, 6 agents, self-contained HTML. the user's editorial criteria integrated in Editor/CLAUDE.md. Basic Editor and Scribe anti-stuck.
 - **v2.0 (2026-04-18)**: hardening applying v3/v2 methodology. Changes:
   1. **5 explicit guiding principles** (no improvising, Critic > Editor on reliability, history > Analyst narrative, sacred editorial criteria, undervalued Scribe).
   2. **4 human gates** with literal options (B0 load — skipped in cron, B1 degraded newspaper, B2 editorial criteria change, B3 scope).

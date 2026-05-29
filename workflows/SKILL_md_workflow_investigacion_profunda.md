@@ -244,29 +244,29 @@ LEAD (Prima):
 
 | Agent | Type | Model | Guaranteed tools | CLAUDE.md |
 |--------|------|--------|--------------------------|-----------|
-| **Weaver** | Relay peer | **Opus** (deep structural reasoning) | peer dispatch, Read, Write, Edit, Bash, MCPs | `$FARO_ROOT/Agentes/Tejedor/CLAUDE.md` |
-| **Challenger** | Relay peer | Sonnet | peer dispatch, Read, Write, WebFetch (validate URLs) | `$FARO_ROOT/Agentes/Cuestionador/CLAUDE.md` |
-| **Investigators** | Relay peers | **Haiku** (validated 2026-04-21) | peer dispatch, Read, Write, WebSearch, WebFetch, YouTube | `$FARO_ROOT/Agentes/Investigador/CLAUDE.md` |
-| **Scribe** | Subagent | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Escribano/CLAUDE.md` |
+| **Weaver** | Relay peer | **Opus** (deep structural reasoning) | peer dispatch, Read, Write, Edit, Bash, MCPs | `$FARO_ROOT/Agentes/Weaver/CLAUDE.md` |
+| **Challenger** | Relay peer | Sonnet | peer dispatch, Read, Write, WebFetch (validate URLs) | `$FARO_ROOT/Agentes/Challenger/CLAUDE.md` |
+| **Investigators** | Relay peers | **Haiku** (validated 2026-04-21) | peer dispatch, Read, Write, WebSearch, WebFetch, YouTube | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
+| **Scribe** | Subagent | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ### Direct communication (who talks with whom)
 
 ```
 LOOP 1:
-inv-f1..fN ──peer dispatch──→ Weaver     (direct reports)
+inv-f1..fN ──dispatch──→ Weaver     (direct reports)
 Weaver ──writes──→ report_v1.md      (disk)
 Weaver ──idle notification──→ lead   (Prima knows v1 is ready)
-Prima ──peer dispatch──→ Challenger: "attack report_v1 at <path>"
-Challenger ──peer dispatch──→ Weaver     (direct feedback)
-Challenger ──peer dispatch──→ lead       (verdict for gate)
+Prima ──dispatch──→ Challenger: "attack report_v1 at <path>"
+Challenger ──dispatch──→ Weaver     (direct feedback)
+Challenger ──dispatch──→ lead       (verdict for gate)
 
 LOOP 2:
-Prima ──peer dispatch──→ inv-fX: "expand F2 with these questions, avoid these URLs"
-inv-fX ──peer dispatch──→ Weaver         (Loop 2 direct reports)
-Prima ──peer dispatch──→ Weaver: "integrate Loop 2 → report_v2"
+Prima ──dispatch──→ inv-fX: "expand F2 with these questions, avoid these URLs"
+inv-fX ──dispatch──→ Weaver         (Loop 2 direct reports)
+Prima ──dispatch──→ Weaver: "integrate Loop 2 → report_v2"
 Weaver produces v2 (REMEMBERS v1 completely)
-Prima ──peer dispatch──→ Challenger: "attack report_v2, verify if v1 fixes were applied"
-Challenger ──peer dispatch──→ Weaver + lead
+Prima ──dispatch──→ Challenger: "attack report_v2, verify if v1 fixes were applied"
+Challenger ──dispatch──→ Weaver + lead
 ```
 
 ### Chain of command (non-negotiable)
@@ -506,7 +506,7 @@ dispatch task to inv-f<i>
 For each focus area F<i>, Faro contacts an Investigator with this literal brief:
 
 ```
-<content of Investigador/CLAUDE.md>
+<content of Investigator/CLAUDE.md>
 
 ---
 
@@ -566,7 +566,7 @@ Faro writes the extracted content in an appendix of the corresponding Investigat
 Literal brief:
 
 ```
-<content of Tejedor/CLAUDE.md>
+<content of Weaver/CLAUDE.md>
 
 ---
 
@@ -611,7 +611,7 @@ Return to me: path of REPORT_v1 + pre-commitment + metrics of your synthesis (VE
 Literal brief:
 
 ```
-<content of Cuestionador/CLAUDE.md>
+<content of Challenger/CLAUDE.md>
 
 ---
 
@@ -661,7 +661,7 @@ Faro determines Loop 2 focus areas from:
 For each Loop 2 focus area F'<j>, Faro dispatches with this literal brief (note the critical addition of "URLs to avoid"):
 
 ```
-<content of Investigador/CLAUDE.md>
+<content of Investigator/CLAUDE.md>
 
 ---
 
@@ -740,7 +740,7 @@ If the user approves → Scribe + retrospective.
 Literal brief:
 
 ```
-<content of Escribano/CLAUDE.md>
+<content of Scribe/CLAUDE.md>
 
 ---
 
@@ -878,10 +878,10 @@ If it returns `verdict: APPROVE` with 0 observations (no gap, contradiction, que
 
 | Agent | Type | Model | Room | CLAUDE.md |
 |--------|------|--------|-----------|-----------|
-| Weaver | Relay peer | **Opus** | inv-deep-<project> | `$FARO_ROOT/Agentes/Tejedor/CLAUDE.md` |
-| Challenger | Relay peer | Sonnet | inv-deep-<project> | `$FARO_ROOT/Agentes/Cuestionador/CLAUDE.md` |
-| Investigators | Relay peers | Haiku | inv-deep-<project> | `$FARO_ROOT/Agentes/Investigador/CLAUDE.md` |
-| Scribe | Subagent (general-purpose) | Sonnet | — (outside room) | `$FARO_ROOT/Agentes/Escribano/CLAUDE.md` |
+| Weaver | Relay peer | **Opus** | inv-deep-<project> | `$FARO_ROOT/Agentes/Weaver/CLAUDE.md` |
+| Challenger | Relay peer | Sonnet | inv-deep-<project> | `$FARO_ROOT/Agentes/Challenger/CLAUDE.md` |
+| Investigators | Relay peers | Haiku | inv-deep-<project> | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
+| Scribe | Subagent (general-purpose) | Sonnet | — (outside room) | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ---
 
@@ -897,7 +897,7 @@ If it returns `verdict: APPROVE` with 0 observations (no gap, contradiction, que
 
 - **Obsidian destination folder**: `$FARO_ROOT/Informes/Investigacion/` (shares folder with lightweight — they are the same type of product, what changes is depth).
 - **File name**: `<YYYY-MM-DD>_<topic_slug>.md`
-- **Mandatory YAML frontmatter** — schema in `Escribano/CLAUDE.md`. The only difference from lightweight: `workflow: investigacion-profunda` and `version_workflow: "3.0"`.
+- **Mandatory YAML frontmatter** — schema in `Scribe/CLAUDE.md`. The only difference from lightweight: `workflow: investigacion-profunda` and `version_workflow: "3.0"`.
 - **Mandatory "Traceability" section** at the end of the Obsidian report with `[[]]` links.
 
 ### Typical next workflow

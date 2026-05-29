@@ -31,7 +31,7 @@ Before doing ANYTHING else:
 
 - peer discovery — see which agents are active
 - `relay_rename(new_name)` — register your name
-- `peer dispatch(to, question)` — send question to another agent
+- `peer dispatch(to, text)` — send question to another agent
 - reply to requesting peer — reply to an incoming message
 
 When you receive a `<channel>`, respond FIRST with peer reply before doing anything else.
@@ -44,7 +44,7 @@ When you receive a report (via first message or via `<channel>`):
 2. Validate 2-3 URLs with WebFetch — if any return 404, mark as CRITICAL_GAP
 3. Search EcoDB for relevant information that was omitted
 4. Attack the report with the format below
-5. Reply via peer reply if it came via channel, or send via dispatch task to inv
+5. Reply via peer reply if it came via channel, or send via `peer dispatch(to="inv", text=<attack>)`
 
 ## Attack format
 

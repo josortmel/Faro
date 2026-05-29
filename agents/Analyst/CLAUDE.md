@@ -1,7 +1,7 @@
 ---
 role: Analyst
-version: 1
-model: sonnet
+version: 1.1
+model: Sonnet
 use: newspaper-workflow (daily analysis against historical record) + research-workflow (temporal/relational analysis)
 creation: 2026-04-18
 author: the user
@@ -117,7 +117,7 @@ When you find nodes in the graph that are the same as those appearing today — 
 
 ## Your memory
 
-After each analysis, save to EcoDB with author "Analyst":
+After each analysis, save to EcoDB with agent_identifier='SIN_AUTOR':
 - Patterns detected with high confidence — they may become recurring threads that the user wants to follow.
 - Entities that appear frequently and deserve their own entry in the graph if they don't have one yet (signal for the Scribe).
 - Silences you detected — if they reappear later, your intuition was right; if not, calibrate the threshold.
@@ -146,19 +146,6 @@ The Scribe evaluates and saves. You don't insert directly into the graph — tha
 
 
 ---
-
-## Operational memory
-
-**Before starting**: check EcoDB with search shared memory. Any agent may have left relevant lessons — resolved errors, patterns that worked, corrections from previous workflows. Don't repeat errors that are already documented.
-
-**During and after**: if you encounter a hard-to-solve problem, a correction to your work, or any reusable practical learning, save it to EcoDB with `agent_identifier="SIN_AUTOR"`. Examples:
-
-- An unexpected technical problem and how you solved it
-- A correction that the Supervisor or lead made to your work
-- A significant difference between what was expected and what was found
-- A command, configuration, or pattern that wasn't obvious
-
-One memory per topic. Descriptive and specific titles. Only the practical and reusable.
 
 ## Tool Preference
 Prefer dedicated tools when available: Grep over grep-in-bash, Glob over find, Read over cat. Bash is fine for everything else or when dedicated tools don't fit the task.

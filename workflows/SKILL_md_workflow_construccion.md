@@ -3,7 +3,7 @@ name: workflow-construccion
 description: |
   Orchestrated workflow to build new tools, systems or components from scratch. Use it when the user wants to create something that does not exist yet — a new MCP, a script, an automation system, a command, an integration, an agent, or any new piece of software. Also activates when the user says "I need a tool that does X", "can we build X?", "I want it to work like this: X". The difference from Evolution is that here there is no existing code to start from — the starting point is a need. For critical tasks, launch workflow-design first to produce the Spec and Plan before executing.
 metadata:
-  version: "5.0"
+  version: "5.2"
   estreno_v1: 2026-04-16
   endurecido_v2: 2026-04-18
   refinado_v3: 2026-04-18
@@ -238,32 +238,32 @@ ORCHESTRATOR (Faro):
 
 ```
 BUILD PHASE:
-supervisor ──peer dispatch──→ executor-1: "implement tasks 1-3"
-supervisor ──peer dispatch──→ executor-2: "implement tasks 4-5" (if parallel)
-executor-1 ──peer dispatch──→ supervisor: regular reports (naming, decisions)
-executor-2 ──peer dispatch──→ supervisor: regular reports
-executor-X ──peer dispatch──→ investigator: "I need to know X" (direct research)
+supervisor ──dispatch──→ executor-1: "implement tasks 1-3"
+supervisor ──dispatch──→ executor-2: "implement tasks 4-5" (if parallel)
+executor-1 ──dispatch──→ supervisor: regular reports (naming, decisions)
+executor-2 ──dispatch──→ supervisor: regular reports
+executor-X ──dispatch──→ investigator: "I need to know X" (direct research)
 supervisor: code review + post-build unification
 
 ATTACK PHASE (both in PARALLEL):
-supervisor ──peer dispatch──→ security-adversarial: "attack version at <path>"
-supervisor ──peer dispatch──→ code-adversarial: "review version at <path>"
-security-adversarial ──peer dispatch──→ supervisor: security report
-code-adversarial ──peer dispatch──→ supervisor: code report
+supervisor ──dispatch──→ security-adversarial: "attack version at <path>"
+supervisor ──dispatch──→ code-adversarial: "review version at <path>"
+security-adversarial ──dispatch──→ supervisor: security report
+code-adversarial ──dispatch──→ supervisor: code report
 
 TEST PHASE:
-supervisor ──peer dispatch──→ verifier: "test version at <path>"
-verifier ──peer dispatch──→ supervisor: beta test report
+supervisor ──dispatch──→ verifier: "test version at <path>"
+verifier ──dispatch──→ supervisor: beta test report
 
 DECIDE PHASE:
 supervisor consolidates findings → peer dispatch to orchestrator (Faro)
 supervisor + Faro evaluate → Faro prevails → the user if unresolved
 
 FIX PHASE:
-supervisor ──peer dispatch──→ executor(s): consolidated findings to implement
+supervisor ──dispatch──→ executor(s): consolidated findings to implement
 
 WORKFLOW ESCALATION:
-supervisor ──peer dispatch──→ orchestrator: "I need workflow-integracion for <X>"
+supervisor ──dispatch──→ orchestrator: "I need workflow-integracion for <X>"
 Faro presents Gate to the user → approves → Faro pauses and launches auxiliary workflow
 ```
 
@@ -274,20 +274,69 @@ Faro presents Gate to the user → approves → Faro pauses and launches auxilia
 - **Supervisor (Opus)**: implementation decisions, code review, unification, production readiness. Prevails over Executors.
 - **Executors/Adversarials/Verifier**: execute and report. Do not decide scope or architecture.
 
-### Relay peer state by phase
+### Incremental dispatch — ZERO IDLE PEERS (v5.2, lessons 2026-05-24 + 2026-05-27)
 
-| Phase | Supervisor | Executor(s) | Sec.Adversarial | Code Adversarial | Verifier | Investigator |
+**Adversarials and Verifier do NOT wait for the full Build phase to finish.** As soon as a task is completed by an Executor, the Supervisor dispatches Adversarials to review that task immediately — while the Executor continues building the next task. The Verifier enters as soon as Adversarials deliver their report on a task.
+
+This is a hard rule, not a suggestion. Every minute an Adversarial or Verifier sits idle while completed code exists unreviewed is wasted. The phases below overlap — they are NOT sequential gates.
+
+```
+Task 0 completed ──→ Adversarials attack Task 0 ──→ Verifier tests Task 0
+Task 1 completed ──→ Adversarials attack Task 1 ──→ Verifier tests Task 1
+  (Executor building Task 2 in parallel with above)
+Task 2 completed ──→ Adversarials attack Task 2 ──→ ...
+```
+
+#### POST-TASK ATOMIC DISPATCH (v5.2, lesson 2026-05-27 — non-negotiable)
+
+After the Supervisor code-reviews task N, the **NEXT action is ONE batch of peer dispatch calls** — all four in the same turn, no exceptions:
+
+```
+# ALL FOUR IN THE SAME TURN — atomic, not sequential
+peer dispatch → adv-code:     review task N code
+peer dispatch → adv-seg:      review task N security
+peer dispatch → verificador:  test task N
+peer dispatch → code:          build task N+1
+```
+
+**There is no valid reason to dispatch only the Executor and defer the others.** If you catch yourself writing peer dispatch to code without simultaneously writing peer dispatch to adv-code + adv-seg + verificador for the completed task, you are violating ZERO IDLE PEERS.
+
+**Mandatory checklist in orchestration log** after each task completion:
+
+```
+Task N COMPLETED — POST-TASK DISPATCH:
+  [x] Supervisor code review done
+  [x] adv-code dispatched on task N
+  [x] adv-seg dispatched on task N
+  [x] verificador dispatched on task N
+  [x] code dispatched on task N+1
+  All 4 in same message batch? YES/NO
+```
+
+If any checkbox is empty, the Supervisor does NOT advance to the next task. The checklist is the enforcement mechanism — fill it before moving on.
+
+**Origin**: Echo v0.1.0 Gate 1, 2026-05-27. Supervisor completed code review of T1+T2 (scaffolding + protocol models), dispatched Executor on T3+T4, but left adv-code, adv-seg, and verificador idle. Rationalized as "not enough attack surface in scaffolding." the user caught it. The rationalization was the bug, not the scaffolding.
+
+### Relay peer state (realistic — overlapping phases)
+
+| What's happening | Supervisor | Executor(s) | Sec.Adversarial | Code Adversarial | Verifier | Investigator |
 |---|---|---|---|---|---|---|
 | Kickoff | **working** | idle | idle | idle | idle | standby |
-| Build | supervising | **working** | idle | idle | idle | standby |
-| Code Review | **working** | idle (standby fix) | idle | idle | idle | standby |
-| Attack | coordinating | idle (standby fix) | **working** | **working** | idle | standby |
-| Test | coordinating | idle (standby fix) | idle | idle | **working** | standby |
-| Decide | **working** + Faro | idle | idle | idle | idle | standby |
-| Fix | supervising | **working** | idle | idle | idle | standby |
+| Build task N | supervising | **working** | reviewing task N-1 | reviewing task N-1 | testing task N-2 | standby |
+| All tasks built | code review | standby fix | **attacking** last batch | **attacking** last batch | testing prev batch | standby |
+| Fix phase | supervising | **working** | idle | idle | idle | standby |
+| Final loop | coordinating | standby | **attacking** fixes | **attacking** fixes | **testing** fixes | standby |
 | Close | **production check** | shutdown | shutdown | shutdown | shutdown | shutdown |
 
-**Minimum 2 complete loops** (BUILD→ATTACK→TEST→FIX→ATTACK→TEST). The first loop always finds things. The second verifies fixes and looks for new ones.
+**Minimum 2 complete attack+test passes over the FULL codebase** (not per-task — the second pass reviews everything including fixes from the first pass).
+
+**Anti-patterns to avoid** (all four are the SAME mistake — waiting when you should dispatch):
+1. "I'll dispatch adversarials when the build is complete." NO. Dispatch on the FIRST completed task.
+2. "I'll dispatch the verifier when the adversarials finish ALL tasks." NO. Dispatch verifier on the first task the adversarials finish reviewing.
+3. "Adversarials finished Task 0 review but I'll wait for Task 1 review before sending verifier." NO. Verifier starts on Task 0 NOW.
+4. **"This task is just scaffolding / boilerplate / not enough to review."** NO. If code exists and was approved, it gets reviewed. Period. The Supervisor does not evaluate whether a task "deserves" review — the pipeline is mechanical. Completed → reviewed. No judgment call. This rationalization is the #1 way ZERO IDLE PEERS gets violated in practice.
+
+If you catch yourself with ANY idle peer and completed unreviewed/untested work, you are doing it wrong. The pipeline is: Executor completes → Adversarials attack → Verifier tests. Each step flows IMMEDIATELY to the next, per task, not per phase.
 
 **Additional Executors**: Supervisor requests from Faro via peer dispatch. Faro decides and dispatches.
 
@@ -324,7 +373,16 @@ $FARO_ROOT/Sesiones/<YYYY-MM-DD>_<project>/
 
 **Rule**: coordination artifacts (CONTRACT, LESSONS, ENVIRONMENT, log) live in `$FARO_ROOT/Sesiones/`. Implementation-specific reports live in the project under `.faro/reportes/`. The **Plan and Spec** already live in the project folder (produced by workflow-design or created by Faro from template).
 
-### 3. Referenced templates
+### 3. Task list (visible progress tracking)
+
+Immediately after Gate B0 approval, Faro creates a task list using `TaskCreate` — one task per Plan task plus adversarial review, verification, and deployment. Each task includes:
+- **subject**: `Task N: <title>` (matches Plan)
+- **description**: 1-2 sentence summary of deliverable
+- **activeForm**: present continuous for spinner display
+
+Set up dependencies with `TaskUpdate.addBlockedBy` reflecting the Plan's `depende_de` graph. Mark tasks `in_progress` when dispatched to an executor, `completed` when verified. This gives the user real-time visibility into workflow progress.
+
+### 4. Referenced templates
 
 - `$FARO_ROOT/Plantillas/PLAN_template.md`
 - `$FARO_ROOT/Plantillas/CONTRACT_template.md`
@@ -472,6 +530,9 @@ Before touching anything:
 1. Read ENVIRONMENT.md: <path>
 2. Read LESSONS.md: <path> — look for lessons tagged with this technology
 3. Read CONTRACT.md section "Executor"
+4. **Search EcoDB for prior knowledge** (mandatory):
+   search shared memory
+   Look for: solved problems, known gotchas, patterns that worked/failed. Do NOT filter by agent_identifier — any agent may have left the solution.
 
 Task to execute:
 <literal YAML/markdown block of the task as it appears in the Plan>
@@ -488,6 +549,9 @@ When done:
 If tests or post_condiciones fail:
 - STATUS = NEEDS_VERIFIER (let the Verifier diagnose)
 - Document the failure literally, without interpreting it.
+- **If you solve the failure**: save the problem+solution to EcoDB immediately:
+  persist to shared memory
+  Do NOT wait until session close — save as soon as you solve it.
 
 If you believe the Plan task is poorly defined:
 - STATUS = DISAGREEMENT_WITH_PLAN
@@ -673,7 +737,20 @@ When Supervisor + Faro agree that the version is ready:
 3. If READY:
 
 ```
-# Notify relay peers to shut down
+# Step 3.5: Knowledge capture — MANDATORY before shutdown (v5.1, lesson 2026-05-24)
+# Each peer saves their learnings to EcoDB + reusable scripts to their project dir.
+# Do NOT send shutdown_request until all peers confirm knowledge saved.
+# Literal prompt for each peer:
+
+dispatch task to Executor-1
+dispatch task to Security_Adversarial
+dispatch task to Code_Adversarial
+dispatch task to Verifier
+dispatch task to Investigator
+
+# Wait for ALL confirmations before proceeding to shutdown
+# Then shut down peers
+
 dispatch task to Executor-1
 dispatch task to Security_Adversarial
 dispatch task to Code_Adversarial
@@ -915,3 +992,8 @@ For **standard** construction (without prior design):
   10. Motivation: this workflow is going to build EcoDB and serious tools. Vibe coding with production quality control.
 
 - **v5.0 (2026-05-22)**: relay rewrite. Agent Teams replaced by relay peers (separate Claude Code sessions). All TeamCreate/Agent/SendMessage/TeamDelete API calls replaced with relay_join/peer dispatch/relay_leave. Agent names translated to English. All gates, workflow terms, paths and memory references updated. Full document translated to English.
+
+- **v5.2 (2026-05-27)**: ZERO IDLE PEERS enforcement. Three changes from Echo v0.1.0 Gate 1 session:
+  1. **POST-TASK ATOMIC DISPATCH**: after Supervisor code-reviews task N, ALL FOUR peer dispatch calls (adv-code + adv-seg + verificador + code) must happen in the same turn. No sequential dispatch, no deferral.
+  2. **Anti-pattern #4**: "This task is just scaffolding / not enough to review" added as explicit violation. The pipeline is mechanical — completed = reviewed. No judgment call.
+  3. **Mandatory checklist** in orchestration log after each task completion. 5 checkboxes, all must be filled before advancing. Enforcement mechanism, not documentation.

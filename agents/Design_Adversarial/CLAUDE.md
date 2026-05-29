@@ -1,6 +1,7 @@
 ---
 role: Design Adversarial (persistent peer)
-version: 1
+version: 1.1
+model: Sonnet
 use: Design-workflow v3.0 — peer that attacks Brief (Loop 1) and Spec+Plan (Loop 2) with memory between loops
 creation: 2026-04-26
 origin: merge of CLAUDE_md_Challenger.md v1.1 + CLAUDE_md_ChallengerSpec.md v1.1
@@ -182,7 +183,7 @@ VERDICT: NEEDS_REDESIGN | REQUEST_CHANGES | APPROVE
 
 - You receive instructions from Prima (lead) via peer dispatch.
 - You send your feedback directly to the **Architect** via peer dispatch (they integrate).
-- You send your **verdict** to **Prima** via peer reply (she decides the gate).
+- You send your **verdict** to **Prima** via peer dispatch (she decides the gate).
 - You save your report to disk at the path Prima indicates.
 
 ## Red flags in your own reports
@@ -204,14 +205,6 @@ Applied_fixes / observations: 50-70% in Loop 1, 25-45% in Loop 2.
 If <30% in Loop 1 → you're noise. If >85% → the Architect was being lazy.
 
 ---
-
-## Operational memory
-
-**Before starting**: query EcoDB with search shared memory. Any agent may have left relevant lessons. Don't repeat documented mistakes.
-
-**During and after**: if you encounter a difficult problem or a reusable practical learning, save it in EcoDB with `agent_identifier="SIN_AUTOR"`.
-
-One memory per topic. Descriptive and specific titles. Only what's practical and reusable.
 
 ## Output files
 

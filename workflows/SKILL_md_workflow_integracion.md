@@ -3,7 +3,7 @@ name: workflow-integracion
 description: |
   Orchestrated workflow for integrating new external technology into the system. Use it whenever the user asks to install, incorporate, add or test a tool, package, library, MCP, ComfyUI node, extension, or any technology that comes from outside and must be made to work inside the existing ecosystem. Also activates when something "is not installed" or "needs to be configured from scratch". Do not wait for the user to ask explicitly — if the request implies bringing something from outside and making it work, this is the correct workflow.
 metadata:
-  version: "4.0"
+  version: "4.1"
   relay_rewrite: 2026-05-22
   debut_v1: 2026-04-16
   hardened_v2: 2026-04-18
@@ -168,21 +168,21 @@ LEAD (Prima):
 
 | Agent | Type | Model | CLAUDE.md | Mode |
 |---|---|---|---|---|
-| **Designer** | Relay peer | **Opus** | `Diseñador/CLAUDE.md` | Generic (installation) |
-| **Executor** | Relay peer | Sonnet | `Ejecutor/CLAUDE.md` | — |
-| **Verifier** | Relay peer | Sonnet | `Verificador/CLAUDE.md` | Functional beta tester |
-| **Investigator** | Relay peer | Haiku | `Investigador/CLAUDE.md` | Standby |
-| **Scribe** | Subagent | Sonnet | `Escribano/CLAUDE.md` | — |
+| **Designer** | Relay peer | **Opus** | `Designer/CLAUDE.md` | Generic (installation) |
+| **Executor** | Relay peer | Sonnet | `Executor/CLAUDE.md` | — |
+| **Verifier** | Relay peer | Sonnet | `Verifier/CLAUDE.md` | Functional beta tester |
+| **Investigator** | Relay peer | Haiku | `Investigator/CLAUDE.md` | Standby |
+| **Scribe** | Subagent | Sonnet | `Scribe/CLAUDE.md` | — |
 
 ### Direct communication
 
 ```
 Designer produces blueprint → disk
-Designer ──peer dispatch──→ Executor: "execute step N"
-Executor ──peer dispatch──→ Designer: reports + problems
-Executor/Designer ──peer dispatch──→ Investigator: "query docs for <tech>"
-Designer ──peer dispatch──→ Verifier: "FUNCTIONALLY verify step N"
-Verifier ──peer dispatch──→ Designer: functional report
+Designer ──dispatch──→ Executor: "execute step N"
+Executor ──dispatch──→ Designer: reports + problems
+Executor/Designer ──dispatch──→ Investigator: "query docs for <tech>"
+Designer ──dispatch──→ Verifier: "FUNCTIONALLY verify step N"
+Verifier ──dispatch──→ Designer: functional report
 Designer consolidates → peer dispatch to Prima
 ```
 
@@ -204,6 +204,12 @@ Designer consolidates → peer dispatch to Prima
 | Close | shutdown | shutdown | shutdown | shutdown |
 
 **Cost of idle relay peers**: zero tokens.
+
+### Dispatch discipline — no idle Verifier (v4.1, propagated from construction v5.2)
+
+**The Verifier does NOT wait for all installation steps to complete.** As soon as a step is verified by the Executor, dispatch the Verifier to independently validate that step — while the Executor continues with the next step.
+
+If the Verifier sits idle while completed steps exist unverified, the workflow is broken.
 
 #### WARNING — Correct agent invocation rule (2026-04-28)
 
@@ -306,7 +312,7 @@ Exact command to completely uninstall and return to pre-integration state.
 ### Step 1: Designer (Install Blueprint)
 
 ```
-<Diseñador/CLAUDE.md>
+<Designer/CLAUDE.md>
 
 ---
 
@@ -356,7 +362,7 @@ Return:
 **Step 2.1** — Executor:
 
 ```
-<Ejecutor/CLAUDE.md>
+<Executor/CLAUDE.md>
 
 ---
 
@@ -386,7 +392,7 @@ If the step has `alternative_if_fails`, try it BEFORE marking DISAGREEMENT — i
 **Step 2.2** — BLIND Verifier:
 
 ```
-<Verificador/CLAUDE.md>
+<Verifier/CLAUDE.md>
 
 ---
 
@@ -539,7 +545,7 @@ For **critical** integration (with prior design): report in `$FARO_ROOT/Informes
 
 - **Obsidian destination folder**: `$FARO_ROOT/Informes/Integración/`
 - **File name**: `<YYYY-MM-DD>_<technology_slug>.md`
-- **Mandatory YAML frontmatter** — schema in `Escribano/CLAUDE.md`. For integration:
+- **Mandatory YAML frontmatter** — schema in `Scribe/CLAUDE.md`. For integration:
   ```yaml
   workflow: integracion
   version_workflow: "3.0"

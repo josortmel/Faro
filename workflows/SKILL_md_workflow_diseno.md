@@ -227,11 +227,11 @@ LEAD (orchestrator):
 
 | Agent | Type | Model | Guaranteed tools | CLAUDE.md |
 |--------|------|--------|-----------------|-----------|
-| **Architect** | Relay peer | **Opus** | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `$FARO_ROOT/Agentes/Arquitecto/CLAUDE.md` |
-| **Design_Adversarial** | Relay peer | Sonnet | peer dispatch, Task*, Read, Write, WebFetch | `$FARO_ROOT/Agentes/Adversarial_Diseno/CLAUDE.md` |
-| **Investigator** | Relay peer | Haiku | peer dispatch, Task*, Read, Write, WebSearch, WebFetch, YouTube | `$FARO_ROOT/Agentes/Investigador/CLAUDE.md` |
-| **Archivist** | One-shot | Haiku | Read, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Archivista/CLAUDE.md` |
-| **Scribe** | One-shot | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Escribano/CLAUDE.md` |
+| **Architect** | Relay peer | **Opus** | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `$FARO_ROOT/Agentes/Architect/CLAUDE.md` |
+| **Design_Adversarial** | Relay peer | Sonnet | peer dispatch, Task*, Read, Write, WebFetch | `$FARO_ROOT/Agentes/Design_Adversarial/CLAUDE.md` |
+| **Investigator** | Relay peer | Haiku | peer dispatch, Task*, Read, Write, WebSearch, WebFetch, YouTube | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
+| **Archivist** | One-shot | Haiku | Read, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Archivist/CLAUDE.md` |
+| **Scribe** | One-shot | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ### Direct communication
 
@@ -244,21 +244,21 @@ LOOP 1 (Brief):
 Architect needs research → peer dispatch(to="Investigator") direct
 Investigator → peer dispatch(to="Architect") result direct
 Architect writes Brief → disk
-Orchestrator ──peer dispatch──→ Design_Adversarial: "attack Brief at <path>"
-Design_Adversarial ──peer dispatch──→ Architect (direct feedback)
-Design_Adversarial ──peer dispatch──→ lead (verdict for gate)
+Orchestrator ──dispatch──→ Design_Adversarial: "attack Brief at <path>"
+Design_Adversarial ──dispatch──→ Architect (direct feedback)
+Design_Adversarial ──dispatch──→ lead (verdict for gate)
 Orchestrator authorizes → dispatch task to Architect
 
 LOOP 2 (Spec + Plan, critical only):
 Architect does verification_checkpoint (real commands, can request research)
 Architect writes Spec + Plan → disk
-Orchestrator ──peer dispatch──→ Design_Adversarial: "attack Spec+Plan, verify Loop 1 fixes"
+Orchestrator ──dispatch──→ Design_Adversarial: "attack Spec+Plan, verify Loop 1 fixes"
 Design_Adversarial REMEMBERS Brief → verifies Brief↔Spec coherence
-Design_Adversarial ──peer dispatch──→ Architect + lead
+Design_Adversarial ──dispatch──→ Architect + lead
 Orchestrator authorizes → dispatch task to Architect
 
 RESEARCH ON-DEMAND:
-any peer ──peer dispatch──→ Investigator: "I need to know X"
+any peer ──dispatch──→ Investigator: "I need to know X"
 Investigator → peer dispatch result to the requesting peer
 If MORE investigators needed → peer asks orchestrator → orchestrator decides and joins more
 ```
@@ -462,7 +462,7 @@ Each finding numbered and referencing the verified file/DB.
 Before joining the relay room and dispatching agents, launch the Archivist to search for internal knowledge about the task topic. This prevents the Investigator from going out to find what is already documented.
 
 ```
-peer dispatch(to="Archivist", question="""<contents of Archivista/CLAUDE.md>
+peer dispatch(to="Archivist", question="""<contents of Archivist/CLAUDE.md>
 
 ---
 
@@ -490,7 +490,7 @@ Deliver in ARCHIVISTA_PREFLIGHT format.""")
 Literal prompt that Faro sends to the Architect (injected after Architect/CLAUDE.md):
 
 ```
-<contents of Arquitecto/CLAUDE.md>
+<contents of Architect/CLAUDE.md>
 
 ---
 
@@ -534,7 +534,7 @@ Return your delivery in that format.
 Literal prompt:
 
 ```
-<contents of Investigador/CLAUDE.md>
+<contents of Investigator/CLAUDE.md>
 
 ---
 
@@ -598,7 +598,7 @@ Return: Brief path + pre-commitment + confirmation that all 6 sections are prese
 Literal prompt:
 
 ```
-<contents of Adversarial_Diseno/CLAUDE.md>
+<contents of Design_Adversarial/CLAUDE.md>
 
 ---
 
@@ -790,7 +790,7 @@ Return: paths + pre-commitment + confirmation that the minimum schemas are met.
 Literal prompt:
 
 ```
-<contents of Adversarial_Diseno/CLAUDE.md>
+<contents of Design_Adversarial/CLAUDE.md>
 
 ---
 
@@ -875,7 +875,7 @@ Report format identical to Step 5 but with Loop 2 metrics.
 Literal prompt:
 
 ```
-<contents of Escribano/CLAUDE.md>
+<contents of Scribe/CLAUDE.md>
 
 ---
 
@@ -925,7 +925,7 @@ Report to Faro with SCRIBE_REPORT confirming the 3 places updated.
 Last agent before the retrospective. Verifies that the Scribe left everything in place.
 
 ```
-peer dispatch(to="Archivist", question="""<contents of Archivista/CLAUDE.md>
+peer dispatch(to="Archivist", question="""<contents of Archivist/CLAUDE.md>
 
 ---
 
@@ -1040,11 +1040,11 @@ Before dispatching any agent, Faro reads the corresponding CLAUDE.md and injects
 
 | Agent | CLAUDE.md path |
 |--------|---------------|
-| Archivist | `$FARO_ROOT/Agentes/Archivista/CLAUDE.md` |
-| Architect | `$FARO_ROOT/Agentes/Arquitecto/CLAUDE.md` |
-| Investigator | `$FARO_ROOT/Agentes/Investigador/CLAUDE.md` |
-| Design_Adversarial | `$FARO_ROOT/Agentes/Adversarial_Diseno/CLAUDE.md` |
-| Scribe | `$FARO_ROOT/Agentes/Escribano/CLAUDE.md` |
+| Archivist | `$FARO_ROOT/Agentes/Archivist/CLAUDE.md` |
+| Architect | `$FARO_ROOT/Agentes/Architect/CLAUDE.md` |
+| Investigator | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
+| Design_Adversarial | `$FARO_ROOT/Agentes/Design_Adversarial/CLAUDE.md` |
+| Scribe | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ---
 
@@ -1056,14 +1056,14 @@ Before dispatching any agent, Faro reads the corresponding CLAUDE.md and injects
 
 **Research precondition** (guiding principle 4):
 - If prior report exists → the Architect reads it in their Step 1 and cites it with [research] traceability in the Brief. Can skip Step 2 (Investigator) if the report covers the questions.
-- If it does NOT exist AND the task is **light standard** → launch contingency Investigator (Step 2, mode 3 of Investigador/CLAUDE.md, Haiku — validated 2026-04-21).
+- If it does NOT exist AND the task is **light standard** → launch contingency Investigator (Step 2, mode 3 of Investigator/CLAUDE.md, Haiku — validated 2026-04-21).
 - If it does NOT exist AND the task is **critical** → Faro ABORTS this workflow and launches `workflow-investigation` first. Critical design without prior research is not permitted.
 
 ### Output — final report archived by the Scribe
 
 - **Target Obsidian folder**: `$FARO_ROOT/Informes/Diseno/`
 - **File name**: `<YYYY-MM-DD>_<project_slug>.md`
-- **Mandatory YAML frontmatter** — schema in `Escribano/CLAUDE.md`. For design:
+- **Mandatory YAML frontmatter** — schema in `Scribe/CLAUDE.md`. For design:
   ```yaml
   workflow: design
   version_workflow: "2.1"

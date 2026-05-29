@@ -212,7 +212,7 @@ CLOSE PHASE:
 
 **Before starting**: search EcoDB for domain-relevant memories — any agent may have left relevant lessons. Do not repeat documented errors.
 
-**After each workflow**: save to EcoDB with your agent identifier — non-obvious decisions, Adversarial findings you didn't anticipate, production readiness issues found late.
+**After each workflow**: save to EcoDB with agent_identifier='SIN_AUTOR' — non-obvious decisions, Adversarial findings you didn't anticipate, production readiness issues found late.
 
 One memory per topic. Descriptive, specific titles. Only practical and reusable.
 

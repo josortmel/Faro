@@ -40,6 +40,14 @@ ARCHIVED_AGENTS = ["Data_Analyst", "Scraper", "Synthesizer"]
 # Abstraction rules: (pattern, replacement)
 ABSTRACTIONS = [
     # MCP tool calls → generic descriptions (preserve agent name)
+    # relay_send (current API, v0.7.2+)
+    (r'`?relay_send\(to="([^"]+)",\s*question="[^"]*"\)`?', r'dispatch task to \1'),
+    (r'`?relay_send\(to="([^"]+)",\s*text="[^"]*"\)`?', r'send message to \1'),
+    (r'`?relay_send\(to="([^"]+)",\s*question=<[^>]*>\)`?', r'dispatch task to \1'),
+    (r'──relay_send──→', '──dispatch──→'),
+    (r'`relay_send`', 'peer dispatch'),
+    (r'relay_send\b', 'peer dispatch'),
+    # relay_ask (deprecated, kept for old files)
     (r'`?relay_ask\(to="([^"]+)",\s*question="[^"]*"\)`?', r'dispatch task to \1'),
     (r'`?relay_ask\(to="([^"]+)",\s*question=<[^>]*>\)`?', r'dispatch task to \1'),
     (r'`?relay_reply\([^)]+\)`?', 'reply to requesting peer'),
@@ -129,12 +137,20 @@ def copy_and_abstract(src: Path, dst: Path):
 def main():
     public = PUBLIC_PATH
 
-    # Clean public dir (except scripts/ and .git/)
+    # Clean public dir (except scripts/, .git/, and docs/images/)
     for item in ['agents', 'workflows', 'templates', 'docs']:
         target = public / item
         if target.exists():
-            shutil.rmtree(target)
-        target.mkdir(parents=True)
+            if item == 'docs':
+                for child in target.iterdir():
+                    if child.name != 'images':
+                        if child.is_dir():
+                            shutil.rmtree(child)
+                        else:
+                            child.unlink()
+            else:
+                shutil.rmtree(target)
+        target.mkdir(parents=True, exist_ok=True)
 
     # Agents
     for agent in ACTIVE_AGENTS:

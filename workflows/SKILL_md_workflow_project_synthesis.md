@@ -149,7 +149,7 @@ Present at **Gate B2**.
 
 Dispatch both:
 - dispatch task to Cuestionador
-- dispatch task to Adversarial_Grafico
+- dispatch task to Visual_Adversarial
 
 Challenger attacks completeness:
 - Would someone starting v2 have everything they need?

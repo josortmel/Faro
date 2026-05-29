@@ -217,32 +217,32 @@ LEAD (Prima):
 
 | Agent | Type | Model | Guaranteed tools | CLAUDE.md |
 |--------|------|--------|--------------------------|-----------|
-| **Weaver** | Relay peer | Sonnet | peer dispatch, Read, Write, Edit, Bash, project MCPs | `$FARO_ROOT/Agentes/Tejedor/CLAUDE.md` |
-| **Challenger** | Relay peer | Sonnet | peer dispatch, Read, Write, WebFetch (to validate URLs) | `$FARO_ROOT/Agentes/Cuestionador/CLAUDE.md` |
-| **Investigators** | Relay peers | Haiku | peer dispatch, Read, Write, WebSearch, WebFetch, YouTube | `$FARO_ROOT/Agentes/Investigador/CLAUDE.md` |
-| **Archivist** | Subagent | Haiku | Read, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Archivista/CLAUDE.md` |
-| **Scribe** | Subagent | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Escribano/CLAUDE.md` |
+| **Weaver** | Relay peer | Sonnet | peer dispatch, Read, Write, Edit, Bash, project MCPs | `$FARO_ROOT/Agentes/Weaver/CLAUDE.md` |
+| **Challenger** | Relay peer | Sonnet | peer dispatch, Read, Write, WebFetch (to validate URLs) | `$FARO_ROOT/Agentes/Challenger/CLAUDE.md` |
+| **Investigators** | Relay peers | Haiku | peer dispatch, Read, Write, WebSearch, WebFetch, YouTube | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
+| **Archivist** | Subagent | Haiku | Read, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Archivist/CLAUDE.md` |
+| **Scribe** | Subagent | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ### Direct communication (who talks with whom)
 
 ```
-inv-f1 ──peer dispatch──→ Weaver     (direct report)
-inv-f2 ──peer dispatch──→ Weaver     (direct report)
-inv-f3 ──peer dispatch──→ Weaver     (direct report)
+inv-f1 ──dispatch──→ Weaver     (direct report)
+inv-f2 ──dispatch──→ Weaver     (direct report)
+inv-f3 ──dispatch──→ Weaver     (direct report)
 
 Weaver ──writes──→ report.md (disk)
 Weaver ──idle notification──→ lead (Prima knows v1 is ready)
 
-Prima ──peer dispatch──→ Challenger: "attack report at <path>" (reads from disk, no duplication)
+Prima ──dispatch──→ Challenger: "attack report at <path>" (reads from disk, no duplication)
 
-Challenger ──peer dispatch──→ Weaver (direct feedback)
-Challenger ──peer dispatch──→ lead (verdict for gate)
+Challenger ──dispatch──→ Weaver (direct feedback)
+Challenger ──dispatch──→ lead (verdict for gate)
 
 Prima evaluates verdict → gate if there are criticals
-Prima ──peer dispatch──→ Weaver: "integrate fixes → v1.1"
+Prima ──dispatch──→ Weaver: "integrate fixes → v1.1"
         (Weaver ALREADY has the feedback in its context — no relay)
 
-If Challenger detects gap → Prima ──peer dispatch──→ inv-fX: "expand investigation on <gap>"
+If Challenger detects gap → Prima ──dispatch──→ inv-fX: "expand investigation on <gap>"
         (Investigators remain alive in standby for this)
 ```
 
@@ -340,7 +340,7 @@ Launch the Archivist to search for internal knowledge about the brief's topic. T
 
 ```
 peer dispatch(to="Archivist", question="""
-<content of Archivista/CLAUDE.md>
+<content of Archivist/CLAUDE.md>
 
 ---
 
@@ -367,7 +367,7 @@ join coordination room
 
 # 2. Contact Weaver (persistent — soul of the workflow)
 peer dispatch(to="Weaver", question="""
-<content of Tejedor/CLAUDE.md>
+<content of Weaver/CLAUDE.md>
 
 ---
 
@@ -398,7 +398,7 @@ Integrate the fixes in v1.1 when it arrives.""")
 
 # 3. Contact Challenger (persistent — adversarial with memory)
 peer dispatch(to="Challenger", question="""
-<content of Cuestionador/CLAUDE.md>
+<content of Challenger/CLAUDE.md>
 
 ---
 
@@ -421,7 +421,7 @@ If you attack more than once, REMEMBER your previous attacks — verify if they 
 # 4. Launch Investigators in parallel (1 per focus area, report to Weaver)
 # NEVER pass full lead context — peers only need their brief
 peer dispatch(to="inv-f1", question="""
-<content of Investigador/CLAUDE.md>
+<content of Investigator/CLAUDE.md>
 
 ---
 
@@ -565,10 +565,10 @@ Identical to deep. Faro injects: "change angle, what sources were NOT cited that
 
 | Agent | Type | Model | Room | CLAUDE.md |
 |--------|------|--------|-----------|-----------|
-| Weaver | Relay peer | Sonnet | inv-<project> | `$FARO_ROOT/Agentes/Tejedor/CLAUDE.md` |
-| Challenger | Relay peer | Sonnet | inv-<project> | `$FARO_ROOT/Agentes/Cuestionador/CLAUDE.md` |
-| Investigators | Relay peers | Haiku | inv-<project> | `$FARO_ROOT/Agentes/Investigador/CLAUDE.md` |
-| Scribe | Subagent (general-purpose) | Sonnet | — (outside room) | `$FARO_ROOT/Agentes/Escribano/CLAUDE.md` |
+| Weaver | Relay peer | Sonnet | inv-<project> | `$FARO_ROOT/Agentes/Weaver/CLAUDE.md` |
+| Challenger | Relay peer | Sonnet | inv-<project> | `$FARO_ROOT/Agentes/Challenger/CLAUDE.md` |
+| Investigators | Relay peers | Haiku | inv-<project> | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
+| Scribe | Subagent (general-purpose) | Sonnet | — (outside room) | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ---
 
@@ -584,7 +584,7 @@ Identical to deep. Faro injects: "change angle, what sources were NOT cited that
 
 - **Obsidian destination folder**: `$FARO_ROOT/Informes/Investigacion/`
 - **File name**: `<YYYY-MM-DD>_<topic_slug>.md`
-- **Mandatory YAML frontmatter** — full schema defined in `Escribano/CLAUDE.md`. For this workflow:
+- **Mandatory YAML frontmatter** — full schema defined in `Scribe/CLAUDE.md`. For this workflow:
   ```yaml
   workflow: investigacion
   version_workflow: "3.0"

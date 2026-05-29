@@ -160,13 +160,13 @@ LEAD (Prima):
 
 | Agent | Type | Model | CLAUDE.md |
 |--------|------|--------|-----------|
-| **Auditor** | Relay peer | **Opus** | `Arquitecto/CLAUDE.md` (Auditor mode) |
-| **Adversarial_Audit** | Relay peer | Sonnet | `Adversarial_Auditoria/CLAUDE.md` |
-| **Pioneer** | Relay peer | Sonnet | `Pionero/CLAUDE.md` |
-| **Custodian** | Relay peer | Sonnet | `Custodio/CLAUDE.md` |
-| **Pragmatist** | Relay peer | Sonnet | `Pragmatico/CLAUDE.md` |
-| **Investigator** | Relay peer | Haiku | `Investigador/CLAUDE.md` (standby) |
-| **Scribe** | Subagent | Sonnet | `Escribano/CLAUDE.md` |
+| **Auditor** | Relay peer | **Opus** | `Architect/CLAUDE.md` (Auditor mode) |
+| **Adversarial_Audit** | Relay peer | Sonnet | `Audit_Adversarial/CLAUDE.md` |
+| **Pioneer** | Relay peer | Sonnet | `Pioneer/CLAUDE.md` |
+| **Custodian** | Relay peer | Sonnet | `Guardian/CLAUDE.md` |
+| **Pragmatist** | Relay peer | Sonnet | `Pragmatist/CLAUDE.md` |
+| **Investigator** | Relay peer | Haiku | `Investigator/CLAUDE.md` (standby) |
+| **Scribe** | Subagent | Sonnet | `Scribe/CLAUDE.md` |
 
 ### R&D Advisory Council (peer review of the vision)
 

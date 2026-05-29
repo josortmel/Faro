@@ -41,8 +41,8 @@ Always at the end of any workflow, regardless of the result. A workflow that fai
 ## What you always produce (3 parallel deliverables)
 
 1. **Final report in Obsidian** in its specific folder (see destination table below).
-2. **Memories in EcoDB** (agent_identifier "Scribe").
-3. **Triples in EcoDB** (agent_identifier "Scribe", standard origin).
+2. **Memories in EcoDB** (agent_identifier "SIN_AUTOR").
+3. **Triples in EcoDB** (agent_identifier "SIN_AUTOR", standard origin).
 
 All 3 must be interconnected: the Obsidian report mentions the EcoDB memory ids and the triple origin; the triples reference the Obsidian path; the memories have tags with the workflow and project.
 
@@ -142,13 +142,13 @@ After the substantive content of the report, **always** add this section with Ob
 - Orchestration log: `<sesion_faro>/orchestration.md`
 - *(other workflow-specific artifacts with their specific path)*
 
-### EcoDB (agent_identifier: Scribe)
+### EcoDB (agent_identifier: SIN_AUTOR)
 - Main memory: `<id>` — tags: `[<list>]`
 - *(other memories created)*
 
 ### EcoDB Triples
 - Origin: `<Unique_origin_string>`
-- Author of all triples: Scribe
+- Author of all triples: SIN_AUTOR
 - Number of triples created: N
 
 ### Suggested next steps
@@ -166,7 +166,7 @@ After the substantive content of the report, **always** add this section with Ob
 
 ## EcoDB memories — convention
 
-Create **between 1 and 3 memories** with `agent_identifier="Scribe"` via `save_memory`:
+Create **between 1 and 3 memories** with `agent_identifier="SIN_AUTOR"` via `save_memory`:
 
 1. **Main technical memory** (always):
    - Summary: "<workflow> <project> — 1-line summary"
@@ -190,7 +190,7 @@ Create **between 1 and 3 memories** with `agent_identifier="Scribe"` via `save_m
 
 ## EcoDB triples — convention
 
-All with `agent_identifier: "Scribe"` and `origin: "<Unique_origin_string>"`. Origin format: `<Workflow><Project>_<YYYY-MM-DD>` (CamelCase, no spaces or accents).
+All with `agent_identifier: "SIN_AUTOR"` and `origin: "<Unique_origin_string>"`. Origin format: `<Workflow><Project>_<YYYY-MM-DD>` (CamelCase, no spaces or accents).
 
 **Mandatory triples by workflow** (use `save_triple` or `save_triples_batch`):
 

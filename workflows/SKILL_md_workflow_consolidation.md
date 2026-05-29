@@ -243,7 +243,7 @@ Present verification at **Gate B2**.
 
 Dispatch both in parallel:
 - dispatch task to Cuestionador
-- dispatch task to Adversarial_Grafico
+- dispatch task to Visual_Adversarial
 
 Challenger attacks the executed result:
 - Do the changes actually fix what the plan said they'd fix?
