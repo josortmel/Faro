@@ -69,7 +69,7 @@ Every significant output passes through adversarial review before delivery. This
 | **Technical** | Code Adversarial, Security Adversarial | LFI, SSRF, injection, logic bugs — 6-12 real bugs/session, 95% hit rate |
 | **Visual** | Visual Adversarial | Design quality, brand compliance, accessibility |
 
-## 11 Workflows
+## 12 Workflows
 
 | Workflow | Purpose |
 |----------|---------|
@@ -78,6 +78,7 @@ Every significant output passes through adversarial review before delivery. This
 | **Evolution** | Refactor existing code/systems. |
 | **Integration** | Install external technology. |
 | **Adaptation** | Connect external tools to internal ecosystem. |
+| **Frontend** | Build frontend interfaces with design authority (Visual Adversarial review). |
 | **Newspaper** | Daily personal HTML newspaper. |
 | **Investigation** (lightweight) | 1 loop, Haiku Investigators, Sonnet Weaver. |
 | **Investigation** (deep) | 2+ loops, Haiku Investigators, Opus Weaver. |
@@ -87,15 +88,17 @@ Every significant output passes through adversarial review before delivery. This
 
 Each workflow is a SKILL file — a formal contract that any new model instance can follow without inventing. The orchestrator reads the SKILL, follows the steps, produces the artifacts.
 
-## 24 Agents
+## 29 Agents
 
 | Role | Agent | Model | Purpose |
 |------|-------|-------|---------|
 | Orchestration | Architect | Opus | Designs specs, reviews architecture |
 | | Supervisor | Opus | Manages team execution |
 | | Executor | Sonnet | Implements plans mechanically |
+| | Vision Keeper | Sonnet | Alignment and strategic coherence |
 | Research | Investigator | Haiku (×5-8) | Parallel research with source verification |
 | | Weaver | Sonnet/Opus | Synthesizes investigator findings |
+| | Synthesizer | Sonnet | Cross-source synthesis |
 | | Source Critic | Sonnet | Validates source quality |
 | Quality | Verifier | Sonnet | NON-SKIPPABLE output verification |
 | | Challenger | Sonnet | Conceptual adversarial |
@@ -107,11 +110,14 @@ Each workflow is a SKILL file — a formal contract that any new model instance 
 | Advisory | Pioneer | Sonnet | Innovation perspective (R&D) |
 | | Guardian | Sonnet | Stability perspective (R&D) |
 | | Pragmatist | Sonnet | Cost/benefit perspective (R&D) |
+| Frontend | Frontend Builder | Sonnet | Builds UI with design authority |
 | Support | Scribe | Sonnet | Archives to vault + EcoDB |
 | | Archivist | Haiku | Pre-flight checks, collection |
 | | Designer | Sonnet | 3 modes: generic/auditor/connector |
 | | Editor | Sonnet | Content editing |
 | | Analyst | Sonnet | Data analysis |
+| | Data Analyst | Sonnet | Structured data analysis |
+| | Scraper | Haiku | Web data extraction |
 | | Layout Designer | Sonnet | Newspaper layout |
 | | News Researcher | Haiku | News source research |
 
@@ -135,7 +141,7 @@ From a full system audit (2026-05-23): 437 sessions analyzed, 989 MB of logs pro
 
 | Metric | Value |
 |--------|-------|
-| Days in production | 82 |
+| Days in production | 88 |
 | Sessions analyzed | 437 |
 | Relay dispatches | 200+ |
 | Design regressions | 0 |
