@@ -20,3 +20,6 @@ __pycache__/
 # Session data (never publish)
 sessions/
 *.jsonl
+
+.playwright-mcp/
+*.log

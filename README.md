@@ -5,14 +5,14 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
   <img src="https://img.shields.io/badge/platform-Claude%20Code%20CLI-7c3aed" alt="Platform">
-  <img src="https://img.shields.io/badge/agents-24%20active-0d9488" alt="Agents">
-  <img src="https://img.shields.io/badge/workflows-11-f59e0b" alt="Workflows">
-  <img src="https://img.shields.io/badge/days%20in%20production-82-e11d48" alt="Production">
+  <img src="https://img.shields.io/badge/agents-29%20active-0d9488" alt="Agents">
+  <img src="https://img.shields.io/badge/workflows-12-f59e0b" alt="Workflows">
+  <img src="https://img.shields.io/badge/days%20in%20production-88-e11d48" alt="Production">
 </p>
 
-Faro is a multi-agent orchestration system for [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code). An Opus orchestrator coordinates 24 specialized agents (Sonnet/Haiku) via inter-session messaging and produces formal artifacts at each stage.
+Faro is a multi-agent orchestration system for [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code). An Opus orchestrator coordinates 29 specialized agents (Sonnet/Haiku) via inter-session messaging and produces formal artifacts at each stage.
 
-Built and used in production over 82 days. 437 sessions analyzed. 989 MB of logs audited.
+Built and used in production over 88 days. 437 sessions analyzed. 989 MB of logs audited.
 
 This repository contains the methodology, agent definitions, workflow contracts, and real metrics from production use. The system runs inside an Obsidian vault with [EcoDB](https://github.com/josortmel/EcoDB) and [Eco Relay](https://github.com/josortmel/eco-relay) as infrastructure.
 
