@@ -1,3 +1,14 @@
+---
+name: "Glosario ES/EN — Faro"
+type: glosario
+produces: glossary
+filled_by: "SIN_AUTOR"
+version: "1.0"
+tags:
+  - proyecto/faro
+  - estado/completado
+---
+
 # Faro ES→EN Glossary
 
 Canonical translations for all Faro terminology. Steps 5+6 MUST reference this glossary — no independent terminology choices.

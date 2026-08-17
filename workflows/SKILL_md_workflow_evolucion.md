@@ -17,7 +17,9 @@ tags:
   - agent/executor
   - agent/verifier
   - agent/scribe
-  - workflow/evolucion
+  - workflow/evolution
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Evolution (v4 — Relay)
@@ -379,7 +381,6 @@ Level: <trivial | standard | critical>
 Your task (only this, nothing else):
 
 1. **Query EcoDB** (`search` tool) with domain tags (author='*'):
-   - <suggested tags>
    Note prior lessons about this system or similar systems.
 
 2. **Read the current code in its entirety** — not what you remember, today's. Do not move to proposing changes before reading. If the system is large (>1000 lines), read critical sections first and make clear what you did NOT read.

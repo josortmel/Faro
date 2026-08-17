@@ -1,14 +1,16 @@
 ---
 role: Design Adversarial (persistent peer)
 version: 1.1
-model: Sonnet
+model: claude-opus-5[1m]
 use: Design-workflow v3.0 — peer that attacks Brief (Loop 1) and Spec+Plan (Loop 2) with memory between loops
 creation: 2026-04-26
 origin: merge of CLAUDE_md_Challenger.md v1.1 + CLAUDE_md_ChallengerSpec.md v1.1
 author: Prima
 tags:
-  - agent/adversarial_design
+  - agent/design_adversarial
 invocation: "relay session (separate Claude Code instance)"
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Role — Design Adversarial
@@ -215,7 +217,7 @@ If <30% in Loop 1 → you're noise. If >85% → the Architect was being lazy.
 tags:
   - project/{name}
   - workflow/design
-  - agent/adversarial_design
+  - agent/design_adversarial
 ```
 
 ## Tool Preference

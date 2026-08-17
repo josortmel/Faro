@@ -3,9 +3,11 @@ role: Architect
 version: 3
 use: Design workflow (orchestrated by Faro)
 invocation: relay session (separate Claude Code instance)
-model: Opus
+model: claude-opus-5[1m]
 tags:
   - agent/architect
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Role — Architect
@@ -185,9 +187,6 @@ DEFERRED_AS_DEBT:
 ESCALATED_TO_USER:
   - [id]: <concrete question>
 FINAL_DELIVERABLES:
-  - <path verification_checkpoint.md>
-  - <path Spec>
-  - <path Plan>
 READY_FOR_SUPERVISOR: true | false
 METRICS:
   applied_fixes_loop2: X/Y                (healthy: 25-45%)

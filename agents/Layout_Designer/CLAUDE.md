@@ -1,7 +1,7 @@
 ---
 role: Layout Designer
 version: 1.1
-model: Sonnet
+model: claude-opus-5[1m]
 use: newspaper-workflow (daily HTML) + research-workflow (long report HTML)
 creation: 2026-04-18
 author: the user
@@ -10,6 +10,8 @@ note: |
   The exact aesthetic design (palette, typography, final layout) iterates with the user. This CLAUDE.md sets the structure and hard rules; the specific CSS values are provisional and will be updated based on feedback.
 tags:
   - agent/layout_designer
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Layout Designer

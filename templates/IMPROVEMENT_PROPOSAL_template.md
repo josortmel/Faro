@@ -1,3 +1,17 @@
+---
+name: "Plantilla — Improvement Proposal"
+type: plantilla
+produces: improvement_proposal
+used_by_workflows:
+filled_by: "SIN_AUTOR"
+version: "1.0"
+tags:
+  - plantilla/improvement_proposal
+  - proyecto/faro
+  - estado/completado
+  - estado/activo
+---
+
 # Improvement Proposal — [title]
 
 ---

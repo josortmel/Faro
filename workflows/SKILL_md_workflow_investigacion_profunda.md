@@ -14,11 +14,13 @@ metadata:
   motivation_rename: |
     After the productive debut on 2026-04-19 (Telegram multi-bot plugin investigation), the user detected the workflow was expensive in tokens (~820k) and methodologically heavy for bounded topics. Decision: fork into two workflows. This remains as "deep" (2 loops, Opus Weaver, Haiku Investigators — validated 2026-04-21) reserved for complex cases. The new lightweight workflow-investigation (1 loop, Haiku Investigators + Sonnet Weaver) covers the default case. Faro classifies: "deep" only if 4+ focus areas OR very new technology OR major strategic decision. "Lightweight" for everything else.
 tags:
-  - workflow/investigacion_profunda
+  - workflow/investigation_deep
   - agent/weaver
   - agent/investigator
   - agent/challenger
   - agent/scribe
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Deep Investigation (v3.0 — Relay)
@@ -584,8 +586,6 @@ Prior internal knowledge (from Step 0.5): <list of ALREADY EXISTING documents, t
 Eco Consulting reference: <summary of stack, available tools, open problems, direction>
 
 Investigator reports (as files):
-  - <path loop1_I1_<focus>.md>
-  - <path loop1_I2_<focus>.md>
   - ...
 
 Your task:
@@ -801,12 +801,8 @@ Format:
 # Retrospective workflow-investigation-deep — <topic> — <date>
 
 ## What worked
-- <skill bullets that helped>
 
 ## What did not work / where I improvised
-- <points where the SKILL did not cover something>
-- <Playwright collisions between Investigators, if any>
-- <typos Faro introduced>
 
 ## Real metrics
 - Loop 1 duration: X min
@@ -819,7 +815,6 @@ Format:
 - Derived hypotheses / total findings: X/N
 
 ## For v<N+1>
-- <1-3 concrete changes to the SKILL that would improve the next execution>
 ```
 
 ---

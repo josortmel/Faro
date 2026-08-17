@@ -1,13 +1,15 @@
 ---
 role: Pioneer (R&D Advisory Council)
 version: 1
-model: Sonnet
+model: claude-opus-5[1m]
 use: R&D-workflow — advisor who advocates for innovation and technological leaps
 creation: 2026-04-26
 author: Prima
 invocation: "relay session (separate Claude Code instance)"
 tags:
   - agent/pioneer
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Pioneer — Innovation Advisor

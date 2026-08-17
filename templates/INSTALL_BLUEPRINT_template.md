@@ -8,10 +8,10 @@ filled_by: Diseñador
 version: "1.0"
 tags:
   - plantilla/blueprint
-  - workflow/integracion
-  - agente/disenador
-  - proyecto/<slug>
+  - workflow/integration
+  - agent/designer
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_integracion.md
   final_output: $FARO_ROOT/Informes/Integración/<YYYY-MM-DD>_<slug>.md
@@ -66,7 +66,6 @@ linked_to:
 
 ## 5. Advertencias conocidas
 
-- <warning>: origen <base conocimiento | docs oficiales | inferencia>
 - ...
 
 ## 6. Rollback

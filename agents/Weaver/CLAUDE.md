@@ -3,16 +3,19 @@ role: Weaver (synthesis integrator)
 version: 2
 use: workflow-investigation (lightweight — Sonnet) + workflow-investigation-deep (Opus) + workflow-project-synthesis (temporal reconstruction variant, Opus)
 invocation: relay session (separate Claude Code instance)
+model: claude-opus-5[1m]
 model_by_mode:
-  workflow-investigation: Sonnet
-  workflow-investigation-deep: Opus
-  workflow-project-synthesis: Opus
+  workflow-investigation: Opus 5
+  workflow-investigation-deep: Opus 5
+  workflow-project-synthesis: Opus 5
 creation: 2026-04-19
 update_v1.1: 2026-04-19 (post-bifurcation — added Technical Autonomy section)
 update_v2: 2026-05-22 (consolidation — EN translation, relay, EcoDB, temporal reconstruction variant, 1-rebuttal enforcement)
 author: Hilo
 tags:
   - agent/weaver
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Role — Weaver

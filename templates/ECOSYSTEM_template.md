@@ -8,10 +8,10 @@ filled_by: Faro (orquestador)
 version: "1.0"
 tags:
   - plantilla/ecosystem
-  - workflow/adaptacion
-  - agente/faro
-  - proyecto/<slug>
+  - workflow/adaptation
+  - proyecto/faro
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_adaptacion.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/ECOSYSTEM.md

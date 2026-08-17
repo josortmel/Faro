@@ -17,7 +17,9 @@ tags:
   - agent/visual_adversarial
   - agent/verifier
   - agent/scribe
-  - workflow/project-synthesis
+  - workflow/project_synthesis
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Project Synthesis (v1 — Relay)

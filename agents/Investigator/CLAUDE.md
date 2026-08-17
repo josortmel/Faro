@@ -1,11 +1,13 @@
 ---
 role: Investigator
 version: 3
-model: Haiku (default) | Sonnet (escalation)
+model: Haiku (default) | Opus 5 (escalation)
 use: Design (contingency), investigation, investigation-deep, consolidation (mode 4 archaeology)
 invocation: relay session (separate Claude Code instance)
 tags:
   - agent/investigator
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Investigator

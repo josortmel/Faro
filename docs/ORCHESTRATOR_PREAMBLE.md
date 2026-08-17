@@ -1,3 +1,15 @@
+---
+name: "Preamble del orquestador — Faro"
+type: documentacion
+produces: preamble
+filled_by: "SIN_AUTOR"
+version: "1.0"
+tags:
+  - proyecto/faro
+  - proyecto/faro
+  - estado/completado
+---
+
 # Orchestrator Preamble
 
 Read and apply this document before any action. This is the operational protocol for any agent acting as workflow orchestrator in the Faro system.
@@ -33,6 +45,18 @@ Read and apply this document before any action. This is the operational protocol
 ### Documentation
 - Trigger Scribe at workflow close (not optional).
 - Scribe archives to: Obsidian vault (workflow report folder) + EcoDB (memory) + knowledge graph (triples).
+
+### Deterministic validation (faro_lint)
+- **At session open** (before dispatching the first agent): run
+  `python "$FARO_ROOT/Scripts\faro_lint.py" --check V2,V6`
+  If V2 reports DRIFT, sync the affected skills before orchestrating — a stale installed SKILL means the workflow runs outdated methodology.
+- **At session close** (before retrospective): run
+  `python "$FARO_ROOT/Scripts\faro_lint.py" --session "<session folder>"`
+  and resolve or justify each finding in orchestration.md.
+- **Before dispatching a Plan to the Supervisor**: run
+  `python "$FARO_ROOT/Scripts\faro_lint.py" --artifact "<plan path>" --type plan`
+  REJECT means the Plan does not comply with PLAN_template — fix before dispatch.
+- Findings report: `Faro/Scripts/faro_lint_report.md`. Accepted debt lives in `Faro/Scripts/faro_lint_debt.md` — do not re-litigate items listed there.
 
 ---
 
@@ -79,9 +103,9 @@ These exist because documentation alone failed to prevent recurring failures acr
 
 8. **Context before planning.** No orchestrator plans without understanding the full prior and current context first. Read primary sources before designing. Never assume scale, format, or structure — verify.
 
-9. **MCP Unicode Pre-Flight.** Before first Agent dispatch in any session, run `python C:\bats\check_mcp_unicode.py`. If FAIL → use peer dispatch for all dispatches (do not use Agent tool).
+9. **MCP Unicode Pre-Flight.** Before first Agent dispatch in any session, run `python $SCRIPTS/check_mcp_unicode.py`. If FAIL → use peer dispatch for all dispatches (do not use Agent tool).
 
-10. **MCP Health Check.** If any MCP tool returns -32603 or network error: run `C:\bats\check_health.bat`. If service down → alert user (may be intentional shutdown). If service up → retry once.
+10. **MCP Health Check.** If any MCP tool returns -32603 or network error: run `$SCRIPTS/check_health.bat`. If service down → alert user (may be intentional shutdown). If service up → retry once.
 
 ---
 
@@ -117,9 +141,10 @@ These exist because documentation alone failed to prevent recurring failures acr
 
 Execute before declaring session closed:
 
-1. **Save session summary** to EcoDB (`type="observation"`, your agent identifier, `tags=["evaluation", "session-close"]`).
-2. **Check for repeated work**: search EcoDB for problems solved this session. If matches exist from prior sessions, flag as REPEATED_WORK.
-3. *(v2 HOOK: automated evaluation schema generation)*
-4. *(v2 HOOK: improvement proposal generation)*
-5. **Archive session artifacts** via Scribe (orchestration.md, retrospective.md, debt_backlog.md).
-6. **Update FARO_ESTADO §11** if a new methodological lesson was learned.
+1. **Run faro_lint on the session folder**: `python "$FARO_ROOT/Scripts\faro_lint.py" --session "<session folder>"`. Resolve or justify findings in orchestration.md.
+2. **Save session summary** to EcoDB (`type="observation"`, your agent identifier, `tags=["evaluation", "session-close"]`).
+3. **Check for repeated work**: search EcoDB for problems solved this session. If matches exist from prior sessions, flag as REPEATED_WORK.
+4. *(v2 HOOK: automated evaluation schema generation)*
+5. *(v2 HOOK: improvement proposal generation)*
+6. **Archive session artifacts** via Scribe (orchestration.md, retrospective.md, debt_backlog.md).
+7. **Update FARO_ESTADO §11** if a new methodological lesson was learned.

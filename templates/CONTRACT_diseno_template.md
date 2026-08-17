@@ -3,15 +3,14 @@ name: Contrato de sesión (diseño)
 type: plantilla
 produces: contract
 used_by_workflows:
-  - diseno
 filled_by: Faro (orquestador)
 version: "1.0"
 tags:
   - plantilla/contract
-  - workflow/disenio
-  - agente/faro
-  - proyecto/<slug>
+  - workflow/design
+  - proyecto/faro
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_diseno.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/CONTRACT.md

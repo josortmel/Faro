@@ -1,3 +1,18 @@
+---
+name: "Plantilla — Project Synthesis"
+type: plantilla
+produces: project_synthesis
+used_by_workflows:
+  - project-synthesis
+filled_by: "SIN_AUTOR"
+version: "1.0"
+tags:
+  - plantilla/project_synthesis
+  - proyecto/faro
+  - estado/completado
+  - estado/activo
+---
+
 # Project Synthesis — [project name]
 
 > **This document is the single source of truth** for the project as of its v1 completion. It synthesizes all design documents, construction reports, adversarial findings, session logs, and EcoDB memories into one definitive record. When ingested into EcoDB, this document IS the project.

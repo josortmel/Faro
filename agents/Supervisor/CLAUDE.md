@@ -1,7 +1,7 @@
 ---
 role: Supervisor (Construction Department Lead)
 version: 3
-model: Opus (always)
+model: claude-opus-5[1m] (always)
 use: workflow-construction — coordinates execution, code review, quality control, production readiness certification
 creation: 2026-04-18
 rewrite_v2: 2026-04-26 (Prima)
@@ -9,6 +9,8 @@ rewrite_v3: 2026-05-22 (Hilo, consolidation — EN translation, relay pattern, E
 invocation: relay session (separate Claude Code instance)
 tags:
   - agent/supervisor
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Supervisor — Construction Department Lead

@@ -19,6 +19,8 @@ tags:
   - agent/scribe
   - agent/archivist
   - workflow/consolidation
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Consolidation (v1 — Relay)
@@ -60,11 +62,11 @@ Phase 0 defines which trigger activated and adjusts scope accordingly.
 | Agent | Model | Role in this workflow |
 |---|---|---|
 | **Investigator** (mode 4: archaeology) | Haiku | Mines session artifacts for divergences, patterns, failures |
-| **Weaver** | Sonnet | Classifies findings, produces consolidated analysis |
-| **Challenger** | Sonnet | Attacks updates — missed items? Evolution disguised as drift? |
-| **Visual Adversarial** | Sonnet | Attacks visual quality of updated documentation |
-| **Verifier** | Sonnet | Verifies updates match findings (NON-SKIPPABLE) |
-| **Scribe** | Sonnet | Archives to vault + EcoDB + graph |
+| **Weaver** | Opus 5 | Classifies findings, produces consolidated analysis |
+| **Challenger** | Opus 5 | Attacks updates — missed items? Evolution disguised as drift? |
+| **Visual Adversarial** | Opus 5 | Attacks visual quality of updated documentation |
+| **Verifier** | Opus 5 | Verifies updates match findings (NON-SKIPPABLE) |
+| **Scribe** | Opus 5 | Archives to vault + EcoDB + graph |
 | **Archivist** (pre-flight) | Haiku | Checks what's already been consolidated |
 
 ---
@@ -190,7 +192,7 @@ The decision report is the ONLY document the user reads. Requirements:
 Lienzo renders the decision report as HTML. The user reviews at Gate B1.5.
 
 ### Phase 2.5 — Adversarial attack on ACTION PLAN (NON-SKIPPABLE)
-**Owner**: Challenger (Sonnet)
+**Owner**: Challenger (Opus 5)
 
 Dispatch via dispatch task to Cuestionador.
 
@@ -201,7 +203,7 @@ Challenger attacks the PLAN BEFORE any documents are modified. Three axes:
 3. **ACTION GAPS**: For each BUG_TO_FIX, does the proposed action address root cause or just symptoms? Will it prevent recurrence?
 
 ### Phase 2.75 — Verification of ACTION PLAN (NON-SKIPPABLE)
-**Owner**: Verifier (Sonnet)
+**Owner**: Verifier (Opus 5)
 
 Dispatch via dispatch task to Verificador.
 
@@ -226,7 +228,7 @@ Architect-level changes (FARO_ESTADO structure, SKILL mechanics, enforcement rul
 Mechanical changes (translations, formatting, path fixes) = code peer writes.
 
 ### Phase 3.5 — Verification of EXECUTED CHANGES (NON-SKIPPABLE)
-**Owner**: Verifier (Sonnet)
+**Owner**: Verifier (Opus 5)
 
 Dispatch via dispatch task to Verificador.
 
@@ -239,7 +241,7 @@ Verifier checks the ACTUAL document changes:
 Present verification at **Gate B2**.
 
 ### Phase 4 — Adversarial attack on FINAL RESULT
-**Owner**: Challenger + Visual Adversarial (parallel, Sonnet)
+**Owner**: Challenger + Visual Adversarial (parallel, Opus 5)
 
 Dispatch both in parallel:
 - dispatch task to Cuestionador
@@ -255,7 +257,7 @@ Visual Adversarial attacks:
 - Consistent formatting across updated sections
 
 ### Phase 5 — Archive
-**Owner**: Scribe (Sonnet)
+**Owner**: Scribe (Opus 5)
 
 Dispatch via dispatch task to Escribano.
 

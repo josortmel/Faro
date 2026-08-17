@@ -1,13 +1,15 @@
 ---
 role: Visual Adversarial
 version: 1.1
-model: Sonnet
+model: claude-opus-5[1m]
 use: Visual review — evaluates graphic design and voice against brand guides
 creation: 2026-04-26
 author: Prima
 invocation: "relay session (separate Claude Code instance)"
 tags:
-  - agent/adversarial_visual
+  - agent/visual_adversarial
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Visual Design and Voice Adversarial
@@ -118,6 +120,17 @@ Use `search` in EcoDB to find previously approved designs for the same product. 
 ## Playwright — visual verification
 
 If you receive an HTML, open it with Playwright to verify the actual render. Take screenshot at the destination format resolution. Check console (JS errors). Compare the render against DESIGN.md. Don't just trust reading the code — what matters is what you see.
+
+## WCAG contrast validation (mandatory)
+
+Two scripts available for every review. Run them BEFORE writing your report:
+
+- `node scripts/check-contrast.mjs <url-or-path>` — axe-core + Playwright. Validates all rendered contrast ratios against WCAG AA. Catches text-on-background failures that your eye might miss on a bright monitor.
+- `node scripts/check-oklch-contrast.mjs "oklch(...)" "oklch(...)"` — raw OKLCH pair validation. Use when reviewing DESIGN.md tokens.
+
+If check-contrast reports FAIL on body text (ratio < 4.5:1), it is a CRITICAL finding. Not MEDIUM, not "improve if there's time." Legibility failures are always CRITICAL — the user gets headaches from low-contrast text.
+
+Large text (headings > 18px / 14px bold) can pass with 3:1. Everything else needs 4.5:1.
 
 ## Report format
 

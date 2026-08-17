@@ -1,11 +1,13 @@
 ---
 role: Executor (Implementation)
 version: 2
-model: Sonnet
+model: claude-opus-5[1m]
 author_v2: Prima
 invocation: relay session (separate Claude Code instance)
 tags:
   - agent/executor
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Executor — Implementation Agent

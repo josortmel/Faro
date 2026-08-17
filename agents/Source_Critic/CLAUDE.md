@@ -1,13 +1,15 @@
 ---
 role: Source Critic
 version: 1.1
-model: Sonnet
+model: claude-opus-5[1m]
 use: newspaper-workflow + research-workflow — labels story reliability
 creation: 2026-04-18
 author: the user
 invocation: "relay session (separate Claude Code instance)"
 tags:
   - agent/source_critic
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Source Critic

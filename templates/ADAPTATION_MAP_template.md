@@ -8,13 +8,14 @@ filled_by: Diseñador-Conector
 version: "1.0"
 tags:
   - plantilla/adaptation
-  - workflow/adaptacion
-  - agente/disenador_conector
-  - proyecto/<slug>
+  - workflow/adaptation
+  - agent/designer_connector
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_adaptacion.md
   final_output: $FARO_ROOT/Informes/Integración/<YYYY-MM-DD>_<slug>.md
+---
 ---
 
 # Adaptation Map — <herramienta externa> × <ecosistema interno>

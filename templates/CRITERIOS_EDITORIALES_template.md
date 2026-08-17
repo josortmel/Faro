@@ -8,13 +8,13 @@ filled_by: Editor
 version: "1.0"
 tags:
   - plantilla/criterios
-  - workflow/periodico
-  - agente/editor
-  - proyecto/<slug>
+  - workflow/newspaper
+  - agent/editor
   - estado/borrador
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_periodico.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/CRITERIOS.md
+
 ---
 
 # CRITERIOS EDITORIALES — snapshot del día

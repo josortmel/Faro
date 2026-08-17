@@ -8,13 +8,14 @@ filled_by: Maquetador
 version: "1.0"
 tags:
   - plantilla/periodico
-  - workflow/periodico
-  - agente/maquetador
-  - proyecto/<slug>
+  - workflow/newspaper
+  - agent/layout_designer
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_periodico.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/periodico_editado.json
+
 ---
 
 Companion metadata for [[PERIODICO_EDITADO_template.json]]

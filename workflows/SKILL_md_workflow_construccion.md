@@ -18,9 +18,11 @@ tags:
   - agent/executor
   - agent/verifier
   - agent/scribe
-  - workflow/construccion
+  - workflow/construction
   - agent/code_adversarial
   - agent/security_adversarial
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Construction (v5 — Relay)
@@ -205,17 +207,17 @@ Each workflow involves a set of **relay peers** (separate Claude Code sessions).
 join coordination room
 
 RELAY PEERS (persistent, bidirectional via peer dispatch):
-├── supervisor (OPUS) — department head: coordinates, code review, unifies criteria,
+├── supervisor (Opus 5) — department head: coordinates, code review, unifies criteria,
 │                       certifies production readiness. Brain of the team.
-├── executor-1 (Sonnet) — main builder, persists through the whole workflow
-├── executor-N (Sonnet) — additional builders if Supervisor requests parallel (on demand)
-├── security-adversarial (Sonnet) — hacker: exploits, leaks, injection, auth bypass
-├── code-adversarial (Sonnet) — senior dev: bugs, dead code, UX, patterns, performance
-├── verifier (Sonnet) — beta tester: functional, stress, regressions, user impressions
+├── executor-1 (Opus 5) — main builder, persists through the whole workflow
+├── executor-N (Opus 5) — additional builders if Supervisor requests parallel (on demand)
+├── security-adversarial (Opus 5) — hacker: exploits, leaks, injection, auth bypass
+├── code-adversarial (Opus 5) — senior dev: bugs, dead code, UX, patterns, performance
+├── verifier (Opus 5) — beta tester: functional, stress, regressions, user impressions
 └── investigator (Haiku) — standby for on-demand research from any peer
 
 EPHEMERAL (dispatched once at close):
-└── scribe (Sonnet) — archives at session close
+└── scribe (Opus 5) — archives at session close
 
 ORCHESTRATOR (Faro):
 └── Gates, launching additional Executors, invoking workflow-integracion/adaptacion,
@@ -226,13 +228,13 @@ ORCHESTRATOR (Faro):
 
 | Agent | Type | Model | Key tools | CLAUDE.md |
 |--------|------|--------|--------------------|-----------|
-| **Supervisor** | Relay peer | **Opus** | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `Supervisor/CLAUDE.md` |
-| **Executor(s)** | Relay peers | Sonnet | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `Executor/CLAUDE.md` |
-| **Security_Adversarial** | Relay peer | Sonnet | peer dispatch, Task*, Read, WebFetch | `Security_Adversarial/CLAUDE.md` |
-| **Code_Adversarial** | Relay peer | Sonnet | peer dispatch, Task*, Read | `Code_Adversarial/CLAUDE.md` |
-| **Verifier** | Relay peer | Sonnet | peer dispatch, Task*, Read, Write, Bash | `Verifier/CLAUDE.md` |
+| **Supervisor** | Relay peer | **Opus 5** | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `Supervisor/CLAUDE.md` |
+| **Executor(s)** | Relay peers | Opus 5 | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `Executor/CLAUDE.md` |
+| **Security_Adversarial** | Relay peer | Opus 5 | peer dispatch, Task*, Read, WebFetch | `Security_Adversarial/CLAUDE.md` |
+| **Code_Adversarial** | Relay peer | Opus 5 | peer dispatch, Task*, Read | `Code_Adversarial/CLAUDE.md` |
+| **Verifier** | Relay peer | Opus 5 | peer dispatch, Task*, Read, Write, Bash | `Verifier/CLAUDE.md` |
 | **Investigator** | Relay peer | Haiku | peer dispatch, Task*, Read, Write, WebSearch, WebFetch | `Investigator/CLAUDE.md` |
-| **Scribe** | Ephemeral | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `Scribe/CLAUDE.md` |
+| **Scribe** | Ephemeral | Opus 5 | Read, Write, MCPs (EcoDB, obsidian) | `Scribe/CLAUDE.md` |
 
 ### Direct communication
 
@@ -271,7 +273,7 @@ Faro presents Gate to the user → approves → Faro pauses and launches auxilia
 
 - **the user**: product decisions (gates, scope, budget).
 - **Faro (orchestrator)**: final technical decisions, launching/stopping Executors, invoking auxiliary workflows. Prevails over Supervisor in conflict.
-- **Supervisor (Opus)**: implementation decisions, code review, unification, production readiness. Prevails over Executors.
+- **Supervisor (Opus 5)**: implementation decisions, code review, unification, production readiness. Prevails over Executors.
 - **Executors/Adversarials/Verifier**: execute and report. Do not decide scope or architecture.
 
 ### Incremental dispatch — ZERO IDLE PEERS (v5.2, lessons 2026-05-24 + 2026-05-27)
@@ -373,14 +375,21 @@ $FARO_ROOT/Sesiones/<YYYY-MM-DD>_<project>/
 
 **Rule**: coordination artifacts (CONTRACT, LESSONS, ENVIRONMENT, log) live in `$FARO_ROOT/Sesiones/`. Implementation-specific reports live in the project under `.faro/reportes/`. The **Plan and Spec** already live in the project folder (produced by workflow-design or created by Faro from template).
 
-### 3. Task list (visible progress tracking)
+### 3. Task list with work delegation — MANDATORY FIRST DELIVERABLE (v5.3, lesson 2026-06-01)
 
-Immediately after Gate B0 approval, Faro creates a task list using `TaskCreate` — one task per Plan task plus adversarial review, verification, and deployment. Each task includes:
-- **subject**: `Task N: <title>` (matches Plan)
-- **description**: 1-2 sentence summary of deliverable
-- **activeForm**: present continuous for spinner display
+**The task list is the FIRST artifact Faro produces after Gate B0 — before any code is written, before any agent is dispatched.** It must include:
 
-Set up dependencies with `TaskUpdate.addBlockedBy` reflecting the Plan's `depende_de` graph. Mark tasks `in_progress` when dispatched to an executor, `completed` when verified. This gives the user real-time visibility into workflow progress.
+1. One `TaskCreate` per Plan task with subject, description, activeForm.
+2. Dependencies via `TaskUpdate.addBlockedBy` reflecting the Plan's `depende_de` graph.
+3. **Owner assignment for every task** — who builds it (Hilo architectural, code mechanical, etc.).
+4. **Delegation rationale** — which tasks are architectural (Supervisor/Hilo writes), which are mechanical (Executor/code writes). Criteria: touches auth/permissions/security → architectural. CRUD/audit/docs → mechanical.
+5. **Execution timeline** — which tasks run in parallel, which are sequential, which peers are active at each phase.
+
+**the user must see the full plan before execution starts.** The task list IS the orchestration plan — it shows who does what, in what order, with what dependencies. No code touches disk until the user has reviewed this deliverable.
+
+**Why this exists (lesson 2026-06-01):** In the v0.9.5 backend session, Hilo skipped the task list and started writing code directly — 5 tasks built without adversarial review, cowboy-style. the user caught it. The task list forces the discipline of planning the pipeline BEFORE executing it: who builds, who reviews, in what order. Without it, ZERO IDLE PEERS cannot be enforced because there is no plan to enforce against.
+
+Mark tasks `in_progress` when dispatched to an executor, `completed` only when verified by adversarials + verificador. **"Completed" means reviewed, not just written.**
 
 ### 4. Referenced templates
 
@@ -432,7 +441,7 @@ If the Plan comes from **workflow-design**, it should comply (see SKILL_md_workf
 # Orchestrator joins the relay room
 join coordination room
 
-# Dispatch Supervisor (Opus) — department head, persists through the whole workflow
+# Dispatch Supervisor (Opus 5) — department head, persists through the whole workflow
 dispatch task to Supervisor
 
 # Dispatch main Executor — persistent builder
@@ -643,7 +652,6 @@ Previous iteration: REQUEST_CHANGES
 Blockers to resolve (ONLY these — do not touch anything else):
 
 <for each id in required_fixes:>
-  - <id>: <severity> at <location> — <message>
 
 Rest of state: the current code already has your previous attempt. Modify it to resolve ONLY the listed blockers.
 
@@ -775,12 +783,8 @@ leave coordination room
 # Retrospective workflow-construccion — <project> — <date>
 
 ## What worked
-- <3-5 bullets of what the SKILL enabled to do well>
 
 ## What did not work / where I improvised
-- <any point where Faro had to decide something the SKILL did not cover>
-- <any gate missing from the SKILL>
-- <any typo I (Faro) introduced that was caught or not caught>
 
 ## Pain metrics
 - Extra iterations due to bugs: N
@@ -789,7 +793,6 @@ leave coordination room
 - Approximate token cost: N
 
 ## For v<N+1>
-- <1-3 concrete changes that would improve the SKILL>
 ```
 
 This retrospective does not require launching an agent — Faro writes it directly as part of the close. It is input for the next SKILL iteration.
@@ -830,8 +833,6 @@ Document in these locations (all mandatory):
    - Summary: what was built, what debt remained
 
 3. EcoDB — save_triples_batch: minimum triples
-   - <tool> is_a <type>
-   - <tool> lives_at <path>
    - <tool> depends_on <library> (for each key dependency)
    - <tool> interacts_with <system> (for each integration)
 

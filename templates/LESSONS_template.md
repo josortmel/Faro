@@ -3,7 +3,6 @@ name: Lecciones de sesión
 type: plantilla
 produces: lessons
 used_by_workflows:
-  - construccion
   - evolucion
   - integracion
   - adaptacion
@@ -11,10 +10,10 @@ filled_by: Todos los agentes
 version: "1.0"
 tags:
   - plantilla/lessons
-  - workflow/construccion
-  - agente/todos
-  - proyecto/<slug>
+  - workflow/construction
+  - agent/all
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_construccion.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/LESSONS.md

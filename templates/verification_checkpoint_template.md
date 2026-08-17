@@ -3,18 +3,17 @@ name: Checkpoint de verificación
 type: plantilla
 produces: verification_checkpoint
 used_by_workflows:
-  - diseno
 filled_by: Arquitecto
 version: "1.0"
 tags:
   - plantilla/verification
-  - workflow/disenio
-  - agente/arquitecto
-  - proyecto/<slug>
+  - workflow/design
+  - agent/architect
   - estado/borrador
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_diseno.md
   final_output: <proyecto>/verification_checkpoint.md
+
 ---
 
 # verification_checkpoint — <fecha YYYY-MM-DD HH:MM>

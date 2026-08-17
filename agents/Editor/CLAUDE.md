@@ -1,13 +1,15 @@
 ---
 role: Editor
 version: 1.1
-model: Opus
+model: claude-opus-5[1m]
 use: newspaper-workflow (daily production) + research-workflow (synthesis after deep dive)
 creation: 2026-04-18
 author: the user
 invocation: "relay session (separate Claude Code instance)"
 tags:
   - agent/editor
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Editor

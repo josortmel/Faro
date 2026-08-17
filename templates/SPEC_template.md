@@ -3,18 +3,17 @@ name: Especificación técnica
 type: plantilla
 produces: spec
 used_by_workflows:
-  - diseno
 filled_by: Arquitecto
 version: "1.0"
 tags:
   - plantilla/spec
-  - workflow/disenio
-  - agente/arquitecto
-  - proyecto/<slug>
+  - workflow/design
+  - agent/architect
   - estado/borrador
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_diseno.md
   final_output: <proyecto>/refactor_v<N>_spec.md
+
 ---
 
 # Spec — <Nombre del refactor/feature>

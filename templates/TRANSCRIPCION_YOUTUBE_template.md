@@ -16,10 +16,12 @@ sesion: <YYYY-MM-DD>_<tema>_<tipo_workflow>
 tags:
   - transcripcion
   - youtube
-  - workflow/investigacion
-  - workflow/investigacion_profunda
-  - agente/investigador
+  - workflow/investigation
+  - workflow/investigation_deep
+  - agent/investigator
   - proyecto
+  - proyecto/faro
+  - estado/activo
 ---
 
 # <título del vídeo>

@@ -1,7 +1,7 @@
 ---
 name: workflow-frontend
 description: |
-  Orchestrated workflow to build frontend interfaces, dashboards, and visual components. Use it when Pepe wants to create or iterate on a UI that does not exist yet — a dashboard, a landing page, a component library, a visual feature. Also activates when Pepe says "build the dashboard", "we need a frontend for X", "make the UI for Y". The difference from workflow-construccion is that this workflow has a design authority (Lienzo) who reviews visual quality and brand compliance at every stage, and a visual adversarial that reviews against DESIGN.md.
+  Orchestrated workflow to build frontend interfaces, dashboards, and visual components. Use it when the user wants to create or iterate on a UI that does not exist yet — a dashboard, a landing page, a component library, a visual feature. Also activates when the user says "build the dashboard", "we need a frontend for X", "make the UI for Y". The difference from workflow-construccion is that this workflow has a design authority (Lienzo) who reviews visual quality and brand compliance at every stage, and a visual adversarial that reviews against DESIGN.md.
 metadata:
   version: "1.0"
   created: 2026-06-01
@@ -24,7 +24,7 @@ tags:
 
 Orchestrates the construction of frontend interfaces. **Lienzo** is the Faro agent: orchestrates execution, makes design decisions, and reviews visual quality. The Frontend Builder implements. Three adversarials and a verifier validate. Lienzo reviews twice per task — once as senior guidance after the build, once as final validation after adversarial review.
 
-> **Guiding principle 1 — Do not improvise**: every step, prompt, path, and format must be explicit. If you read this skill and think "here I need to decide how X is done" — stop and consult Pepe (gate). Do not improvise.
+> **Guiding principle 1 — Do not improvise**: every step, prompt, path, and format must be explicit. If you read this skill and think "here I need to decide how X is done" — stop and consult the user (gate). Do not improvise.
 >
 > **Guiding principle 2 — DESIGN.md is the governing visual authority**: if the Frontend Builder or any adversarial proposes something that contradicts DESIGN.md (colors, typography, spacing, motion, components), **DESIGN.md wins**. Lienzo detects the conflict and corrects. This is the frontend equivalent of "Spec is superior authority" in workflow-construccion.
 >
@@ -35,7 +35,7 @@ Orchestrates the construction of frontend interfaces. **Lienzo** is the Faro age
 ## When it activates
 
 Lienzo launches this workflow when:
-1. Pepe asks to build a frontend that does not exist (dashboard, UI, visual component).
+1. the user asks to build a frontend that does not exist (dashboard, UI, visual component).
 2. And the task has been previously classified as trivial / standard / critical.
 
 Lienzo **does not** launch this workflow for:
@@ -54,7 +54,7 @@ Lienzo **does not** launch this workflow for:
 | **standard** | Multiple components, integrates with existing API, no new backend, no auth changes | Full workflow with all agents |
 | **critical** | Touches auth UI, data visualization, multi-page architecture, deploy to production | **Spec+Plan from Prima first**, then this workflow |
 
-If ambiguous → Lienzo asks Pepe before choosing.
+If ambiguous → Lienzo asks the user before choosing.
 
 ---
 
@@ -72,7 +72,7 @@ I have loaded workflow-frontend v1.
 
 Assignment received: <1-2 sentence summary>
 Classified level: <trivial | standard | critical>
-Plan origin: <prior workflow-design | Lienzo template | Pepe provided it>
+Plan origin: <prior workflow-design | Lienzo template | the user provided it>
 Plan path: <absolute path>
 Spec path: <absolute path or "not applicable for standard">
 
@@ -82,7 +82,7 @@ Visual context:
 - Visual handoff: <list of approved iterations, screenshots, or "first build — no prior work">
 
 Orchestration plan:
-- Session folder: Eco_Consulting/Faro/Sesiones/<YYYY-MM-DD>_<project>/
+- Session folder: $FARO_ROOT/Sesiones/<YYYY-MM-DD>_<project>/
 - Project folder: <project path>
 - Agents (in order):
     1. Lienzo (Opus 4.8) — orchestrator + design authority + senior reviewer
@@ -112,7 +112,7 @@ Same as workflow-construccion Gate B2. After 3 failed iterations or when a promp
 
 ### Gate F3 — Scope change during execution
 
-Same as workflow-construccion Gate B3. When Pepe expands or modifies scope mid-workflow.
+Same as workflow-construccion Gate B3. When the user expands or modifies scope mid-workflow.
 
 ---
 
@@ -121,9 +121,9 @@ Same as workflow-construccion Gate B3. When Pepe expands or modifies scope mid-w
 ### Team structure
 
 ```
-relay_join(room="front-<project>")
+join coordination room
 
-RELAY PEERS (persistent, bidirectional via relay_send):
+RELAY PEERS (persistent, bidirectional via peer dispatch):
 ├── Lienzo (Opus 4.8) — Faro agent: orchestrates, reviews design, makes aesthetic decisions,
 │                        handles architectural frontend decisions, WCAG validation
 ├── frontend-builder (Opus 4.8) — builder: implements components, pages, state management
@@ -146,7 +146,7 @@ RELAY PEERS (persistent, bidirectional via relay_send):
 
 ### Chain of command
 
-- **Pepe**: product decisions (gates, scope, UX direction).
+- **the user**: product decisions (gates, scope, UX direction).
 - **Lienzo (Faro agent)**: design decisions, visual authority, architectural decisions, final approval. Prevails over all agents on aesthetic and structural matters.
 - **Frontend Builder**: implementation decisions within Lienzo's brief. Reports deviations.
 - **Adversarials/Verificador**: review and report. Do not decide design direction or architecture.
@@ -181,7 +181,7 @@ When starting a session that continues prior work:
 
 ```
 1. Load DESIGN.md (always — it may have been updated).
-2. Search EcoDB: search(query_text="<project>", tags=["status:approved"], max_images=10, agent_identifier="Lienzo")
+2. Search EcoDB: search shared memory
 3. From results, extract:
    - Latest approved iteration per component/page (not all 50 — just the current state)
    - Any design decisions tagged with the project
@@ -220,11 +220,11 @@ The difference is the Lienzo quick review gate between BUILD and ATTACK. This is
    → FEEDBACK: specific notes back to Frontend Builder (counts as iteration)
    → REJECT: fundamental misunderstanding, re-dispatch with clarified brief
 3. If approved → ATOMIC DISPATCH (all in same turn):
-   relay_send → adv-code:          review task N code
-   relay_send → adv-seg:           review task N security
-   relay_send → adversarial-visual: review task N design (DESIGN.md + Voice Guide included)
-   relay_send → verificador:       test task N
-   relay_send → frontend-builder:  build task N+1
+   peer dispatch → adv-code:          review task N code
+   peer dispatch → adv-seg:           review task N security
+   peer dispatch → adversarial-visual: review task N design (DESIGN.md + Voice Guide included)
+   peer dispatch → verificador:       test task N
+   peer dispatch → frontend-builder:  build task N+1
 4. Adversarials + verificador report back
 5. Lienzo FINAL REVIEW:
    - Consolidate all findings
@@ -255,7 +255,7 @@ Task N COMPLETED — POST-TASK DISPATCH:
 
 ### Step 0: Lienzo validates and prepares
 
-1. Receives assignment from Pepe.
+1. Receives assignment from the user.
 2. Determines level (trivial/standard/critical). If uncertain → asks.
 3. If critical and no Spec+Plan exists → escalates to Prima for workflow-design. Returns here when done.
 4. Locates Plan + Spec. Validates minimum schema (same as construction).
@@ -264,28 +264,21 @@ Task N COMPLETED — POST-TASK DISPATCH:
    - Voice Guide exists? If missing → warn (soft block).
    - Prior approved iterations? Load from EcoDB for visual handoff.
 6. Creates session folder and project report structure.
-7. **Gate F0** — waits for Pepe's confirmation.
+7. **Gate F0** — waits for the user's confirmation.
 
 ### Step 1: Join room and dispatch relay peers
 
 ```
-relay_join(room="front-<project>")
+join coordination room
 
 # Dispatch Frontend Builder (Opus 4.8) — persistent builder
-relay_send(to="frontend-builder", text="<Frontend_Builder/CLAUDE.md> + [ASSIGNMENT]
-  You are the frontend builder for this workflow.
-  DESIGN.md: <absolute path> — read it before any implementation. It is the governing visual authority.
-  Voice Guide: <absolute path or 'not applicable'>
-  Visual handoff: <list of approved iterations with paths, or 'first build'>
-  Await task assignments from Lienzo.")
+send message to frontend-builder
 
 # Dispatch adversarials + verificador — await their turn
-relay_send(to="adv-code", text="<Code_Adversarial/CLAUDE.md> + Await instructions from Lienzo.")
-relay_send(to="adv-seg", text="<Security_Adversarial/CLAUDE.md> + Await instructions from Lienzo.")
-relay_send(to="adversarial-visual", text="<Visual_Adversarial/CLAUDE.md> + Await instructions from Lienzo.
-  DESIGN.md: <absolute path> — your review authority.
-  Voice Guide: <absolute path or 'not applicable'>")
-relay_send(to="verificador", text="<Verifier/CLAUDE.md> + Await instructions from Lienzo.")
+send message to adv-code
+send message to adv-seg
+send message to adversarial-visual
+send message to verificador
 ```
 
 ### Step 2: Lienzo kickoff
@@ -293,7 +286,7 @@ relay_send(to="verificador", text="<Verifier/CLAUDE.md> + Await instructions fro
 Before dispatching the first task, Lienzo:
 
 1. Confirms Plan meets minimum schema.
-2. Searches EcoDB for prior knowledge: `search(query_text="<project> frontend", limit=5)`
+2. Searches EcoDB for prior knowledge: search shared memory
 3. Pre-flight checks:
    - Node.js/npm version matches project requirements
    - Dependencies installed (`npm ls` or equivalent)
@@ -318,7 +311,7 @@ Iteration: <M> of maximum 3
 Before touching anything:
 1. Read DESIGN.md: <path> — colors, typography, spacing, motion, components
 2. Read visual handoff: <paths to approved screenshots/iterations or "first build">
-3. Search EcoDB: search(query_text="<task keywords>", limit=3)
+3. Search EcoDB: search shared memory
 
 Task to implement:
 <literal task block from Plan>
@@ -373,18 +366,18 @@ Outcomes:
 
 ```
 # ALL FIVE IN THE SAME TURN — atomic
-relay_send → adv-code:           "Review task N. Files: <list of files touched>. Focus: component patterns,
+peer dispatch → adv-code:           "Review task N. Files: <list of files touched>. Focus: component patterns,
                                   performance, bundle impact, dead code."
-relay_send → adv-seg:            "Review task N. Files: <list of files touched>. Focus: XSS, input sanitization,
+peer dispatch → adv-seg:            "Review task N. Files: <list of files touched>. Focus: XSS, input sanitization,
                                   auth token handling, data exposure."
-relay_send → adversarial-visual: "Review task N. Files: <list of files touched>.
+peer dispatch → adversarial-visual: "Review task N. Files: <list of files touched>.
                                   DESIGN.md: <absolute path>. Voice Guide: <absolute path>.
                                   Focus: color compliance, typography hierarchy, spacing rhythm, anti-slop,
                                   WCAG contrast."
-relay_send → verificador:        "Test task N at <dev server URL or file path>.
+peer dispatch → verificador:        "Test task N at <dev server URL or file path>.
                                   Checks: 1. [component renders at <URL>] 2. [responsive at 375/768/1440]
                                   3. [user flow: <specific steps>] 4. [no console errors] 5. [a11y basics]"
-relay_send → frontend-builder:   "Build task N+1: <next task>"
+peer dispatch → frontend-builder:   "Build task N+1: <next task>"
                                   (ONLY if task N+1 does NOT depend on task N — see dependency check below)
 ```
 
@@ -447,7 +440,7 @@ If Frontend Builder responds with `STATUS = NEEDS_CLARIFICATION`:
 
 1. Lienzo reads the conflict description.
 2. If Lienzo can resolve (DESIGN.md interpretation, brief ambiguity) → respond directly with the clarification + updated brief.
-3. If Lienzo cannot resolve (product decision, UX direction) → escalate to Pepe immediately. Do not guess.
+3. If Lienzo cannot resolve (product decision, UX direction) → escalate to the user immediately. Do not guess.
 4. Clarification does NOT count as an iteration — the builder hasn't built anything yet.
 5. After clarification, re-dispatch the same task with the updated brief.
 
@@ -494,7 +487,7 @@ Only after all 14 checks pass → proceed to closure documentation.
 ### Session folder
 
 ```
-Eco_Consulting/Faro/Sesiones/<YYYY-MM-DD>_<project>/
+$FARO_ROOT/Sesiones/<YYYY-MM-DD>_<project>/
   ├── orquestacion.md         ← append-only Lienzo log
   ├── retrospectiva.md        ← what worked, what didn't, pain metrics
   └── backlog_deuda.md        ← documented debt items
@@ -558,7 +551,7 @@ date: YYYY-MM-DD
 project: <human name>
 project_slug: <slug>
 faro_agent: Lienzo
-faro_session: Eco_Consulting/Faro/Sesiones/<session>/
+faro_session: $FARO_ROOT/Sesiones/<session>/
 prior_report_consumed: "<link to Spec+Plan or null>"
 level: standard | critical
 tasks_completed: N/M
@@ -627,12 +620,12 @@ If adv-seg returns 0 findings:
 ### Anti-stuck — Lienzo (self)
 
 If Lienzo has been reviewing for more than 2 iterations without clear direction:
-> Stop. Tell Pepe where you're stuck. Two heads think better than one.
+> Stop. Tell the user where you're stuck. Two heads think better than one.
 
 ### Anti-stuck — General (pipeline stall)
 
 If any peer has not responded in 5+ minutes and has received a dispatch:
-> Check if the peer is alive (`relay_peers`). If offline → re-dispatch. If online but silent → send a nudge: *"Status check — are you working on the task I sent? Reply with current progress or blockers."*
+> Check if the peer is alive (peer discovery). If offline → re-dispatch. If online but silent → send a nudge: *"Status check — are you working on the task I sent? Reply with current progress or blockers."*
 
 ---
 

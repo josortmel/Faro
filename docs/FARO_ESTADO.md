@@ -1,8 +1,9 @@
 ---
 use: Documentation Agents Leads
 tags:
-  - Documentation_ECO_CONSULTING
-  - Agent/lead
+  - proyecto/eco_consulting
+  - agent/lead
+  - estado/completado
 ---
 # FARO — Complete System State
 
@@ -10,7 +11,7 @@ tags:
 >
 > Complements `GLOSARIO.md` (quick nomenclature reference). This document is the operational manifesto.
 >
-> **Last update**: 2026-05-22 (Hilo, system consolidation for GitHub release). Full rewrite from Spanish to English. Reconciled against 33 sessions of real usage (2026-04-18 to 2026-05-22). Key changes: Agent Teams → Relay as canonical orchestration, 22 → 24 agents, 9 → 11 workflows, EcoDB unified memory, three adversarial layers formalized, enforcement mechanisms added, Orchestrator Preamble introduced. Design doc: `$FARO_ROOT/Informes/Diseño/2026-05-22_faro_consolidation_github_release.md`.
+> **Last update**: 2026-07-14 (Eco, faro_lint integration + inventory reconciliation: 13 workflows, 28 active agents, deterministic validators). Previous: 2026-05-22 (Hilo, system consolidation for GitHub release). Full rewrite from Spanish to English. Reconciled against 33 sessions of real usage (2026-04-18 to 2026-05-22). Key changes: Agent Teams → Relay as canonical orchestration, 22 → 24 agents, 9 → 11 workflows, EcoDB unified memory, three adversarial layers formalized, enforcement mechanisms added, Orchestrator Preamble introduced. Design doc: `$FARO_ROOT/Informes/Diseño/2026-05-22_faro_consolidation_github_release.md`.
 >
 > **Relationship to SKILLs**: this document is an orientational map. The operational source of truth for each workflow is the SKILL file in `Faro/Skills/`. If this document contradicts a SKILL, **the SKILL wins**.
 >
@@ -25,7 +26,7 @@ tags:
 
 **Faro** is a multi-agent orchestration system for Claude Code CLI. An Opus orchestrator coordinates specialized agents (Sonnet/Haiku) via **inter-session messaging system** (inter-session messaging, separate sessions) and produces formal artifacts at each stage.
 
-Faro **orchestrates 11 workflows**:
+Faro **orchestrates 13 workflows**:
 
 1. **workflow-design** — produces Brief + Spec + Plan before building. Investigator is contingency.
 2. **workflow-construction** — builds from scratch. Supervisor as Opus department lead; Verifier as beta tester.
@@ -38,12 +39,14 @@ Faro **orchestrates 11 workflows**:
 9. **workflow-rd** — strategic R&D evaluation. Audits existing system, proposes investigation focuses, synthesizes vision via Advisory Council (Pioneer/Guardian/Pragmatist). Does not execute — feeds workflow-design.
 10. **workflow-consolidation** 🆕 — periodic system audit against real usage. Dual trigger: every N=15 sessions or event-driven (release, pivot). Mines session artifacts, classifies divergences, updates core docs.
 11. **workflow-project-synthesis** 🆕 — synthesizes definitive truth document when a project v1 completes. Reconstructs decision timeline, extracts reusable lessons, archives to EcoDB.
+12. **workflow-deep-design** — multi-model deep design. Iterative refinement with external counsellors (Design_Counsellor instances on different models) plus independent adversarials, minimum 3 full rounds before approval. For high-stakes designs where single-model blind spots are unacceptable.
+13. **workflow-frontend** — builds frontend interfaces and dashboards. Design authority (Lienzo) reviews visual quality and brand compliance at every stage; Frontend_Builder implements from closed briefs; visual adversarial reviews against DESIGN.md.
 
 **Orchestration pattern — Relay**: agents run as **separate Claude Code sessions** coordinated via inter-session messaging system (peer dispatch, peer reply, peer discovery). Each agent session has its own context window, CLAUDE.md, and tools. The orchestrator dispatches tasks via peer dispatch (max 2 tasks per ask), receives structured reports, and makes routing decisions.
 
 **Memory system — EcoDB**: shared memory infrastructure (PostgreSQL + pgvector + Apache AGE). 22 MCP tools for semantic search, memory persistence, knowledge graph traversal, entity extraction, and document ingestion. All agents share one EcoDB instance.
 
-Faro **does not execute code directly** — it coordinates **24 specialized agents** and exchanges formal artifacts. An **Orchestrator Preamble** (shared CLAUDE.md fragment) encodes the operational protocol that any orchestrator role must follow: logging, memory integration, coordination rules, enforcement mechanisms, and escalation protocol.
+Faro **does not execute code directly** — it coordinates **28 specialized agents** and exchanges formal artifacts. An **Orchestrator Preamble** (shared CLAUDE.md fragment) encodes the operational protocol that any orchestrator role must follow: logging, memory integration, coordination rules, enforcement mechanisms, and escalation protocol.
 
 **Fundamental operating principle**: Faro and sub-agents **do not infer well**. Every step, prompt, path, and format must be explicit. The methodology in the SKILLs is designed so a new model can follow it without inventing. **If this section contradicts a SKILL, the SKILL wins**.
 
@@ -60,7 +63,7 @@ $FARO_ROOT/                          # Obsidian vault: $VAULT/
 │   ├── GLOSARIO.md                            # Nomenclature quick reference
 │   ├── ORCHESTRATOR_PREAMBLE.md               # Shared protocol fragment for orchestrator roles
 │   └── ... (12 reference docs total)
-├── Skills/                                    # 11 operational SKILLs (Relay pattern)
+├── Skills/                                    # 13 operational SKILLs (Relay pattern)
 │   ├── SKILL_md_workflow_diseno.md
 │   ├── SKILL_md_workflow_construccion.md
 │   ├── SKILL_md_workflow_evolucion.md
@@ -71,8 +74,10 @@ $FARO_ROOT/                          # Obsidian vault: $VAULT/
 │   ├── SKILL_md_workflow_investigacion_profunda.md
 │   ├── SKILL_md_workflow_id.md
 │   ├── SKILL_md_workflow_consolidation.md      # 🆕 periodic system audit
-│   └── SKILL_md_workflow_project_synthesis.md  # 🆕 definitive project truth document
-├── Agentes/                                   # 24 active agents (subdirectory per agent)
+│   ├── SKILL_md_workflow_project_synthesis.md  # 🆕 definitive project truth document
+│   ├── SKILL_md_workflow_diseno_profundo.md    # multi-model deep design (counsellors)
+│   └── SKILL_md_workflow_frontend.md           # frontend construction (Lienzo authority)
+├── Agentes/                                   # 28 active agents + 3 archived (subdirectory per agent)
 │   ├── Architect/
 │   │   ├── CLAUDE.md                          # Agent identity + role definition
 │   │   └── .claude/settings.local.json        # Agent-specific settings
@@ -99,6 +104,10 @@ $FARO_ROOT/                          # Obsidian vault: $VAULT/
 │   ├── Guardian/                              # Advisory Council (stability)
 │   ├── Pragmatist/                            # Advisory Council (cost/benefit)
 │   ├── Archivist/                             # Pre/post-flight + collection mode
+│   ├── Design_Counsellor/                     # Deep-design external peer (any model: Opus/DeepSeek/ChatGPT)
+│   ├── Frontend_Builder/                      # workflow-frontend builder (closed briefs from Lienzo)
+│   ├── OSINTSpy/                              # Personal OSINT (standalone, direct with the user — not workflow)
+│   ├── Vision_keeper/                         # Guardian of user's product vision (manual invocation via relay)
 │   ├── Data_Analyst/                          # ⚠️ ARCHIVED — consulting-specific
 │   ├── Scraper/                               # ⚠️ ABSORBED — capability transferred to Investigator
 │   └── Synthesizer/                           # ⚠️ ARCHIVED — consulting-specific
@@ -161,7 +170,7 @@ Some agents also have `.claude/skills/<workflow>/SKILL.md subdirectories with op
 
 ---
 
-## 3. The 24 agents — who does what, when, and where
+## 3. The 28 agents — who does what, when, and where
 
 ### 3.1 Core system agents (9)
 
@@ -257,13 +266,22 @@ These agents were used in a single consulting session (market research PyMEs, 20
 - "Investigation Architect" = does NOT exist; it's the **Weaver** (different agent, different craft: integrates, doesn't decide).
 - "Synthesizer" / "Integrator" = names considered and rejected; the canonical role is **Weaver**.
 
-### 3.9 Agent loading rule
+### 3.9 Agents added post-consolidation (2026-05-30 — 2026-06-29)
+
+| Agent | Workflows | Role |
+|---|---|---|
+| **Design_Counsellor** | deep-design | External peer that improves Brief and Spec+Plan across iterative rounds. Runs on any model (Opus, DeepSeek, ChatGPT) — several instances on different models per round. Strengthens, does not attack. |
+| **Frontend_Builder** | frontend | Builds UI screens from closed briefs by Lienzo. Sonnet/DeepSeek. No aesthetic or architectural improvisation. |
+| **Vision_keeper** | any (manual) | Guardian of the user's product vision — barrier between the user and workflow output. Invoked manually by the user via relay. Opus. |
+| **OSINTSpy** | none (standalone) | Personal OSINT: own-privacy audit and contact verification. Direct terminal with the user, not part of workflow orchestration. |
+
+### 3.10 Agent loading rule
 
 Before dispatching any agent, the orchestrator **reads the corresponding CLAUDE.md and injects its content LITERALLY** at the start of the prompt. No paraphrasing, no summarizing. This guarantees complete role identity regardless of which model executes.
 
 For orchestrator roles: the CLAUDE.md includes a reference to `ORCHESTRATOR_PREAMBLE.md`, which the orchestrator reads and applies before any action. Sub-agents do not receive the Preamble.
 
-### 3.10 Skill loading at session start
+### 3.11 Skill loading at session start
 
 Agents have **custom skills** installed in their `.claude/skills/<workflow>/SKILL.md directories. These skills should be loaded at the start of each session to enhance agent capabilities. Key patterns:
 
@@ -343,6 +361,7 @@ These rules are **hard-coded into SKILLs and/or the Orchestrator Preamble**. The
 | Relay ask too large → timeout | **Max 2 tasks per peer dispatch.** Larger payloads cause timeout (Sonnet 200K context). | Orchestrator Preamble |
 | Adversarial false positives accepted blindly | **Cross-verify adversarial findings** against current code/state before accepting as blockers. | Orchestrator Preamble |
 | Orchestrator writing mechanical code | **Explicit delegation rules.** Orchestrator writes specs and reviews. Code peers (Executor, code session) write implementation. Tests go to Verifier. No exceptions for "just one line." | Orchestrator Preamble |
+| Silent doc↔disk drift (stale installed SKILLs, undocumented agents/workflows, broken schemas) | **faro_lint deterministic validators** (V1-V6). Daily scheduled run + session open (`--check V2,V6`) + session close (`--session`) + Plan validation before dispatch (`--artifact`). Accepted debt registered in `Scripts/faro_lint_debt.md`. | `Scripts/faro_lint.py` + Orchestrator Preamble + Windows Task Scheduler |
 
 ---
 
@@ -538,9 +557,53 @@ Lessons from real usage are maintained in a separate document: **`LESSONS.md`** 
 
 See `$FARO_ROOT/Documentacion/LESSONS.md` for the full catalog (29 lessons as of 2026-05-22).
 
+### Lessons from day 99 (2026-06-09) — NOT YET IN LESSONS.md
+
+**L30 — Ask WHY before building WHAT.** When the user asks for something complex, verify the intent behind the spec before executing. Day 99: built a separate SDK pip package following Prima's spec when the user wanted LangChain integrated inside EcoDB. Helena delivered the correct version in a fraction of the time because she asked what the user actually wanted. The spec was wrong, and nobody questioned it.
+
+**L31 — When the user says "there's a big problem" — STOP.** Don't continue dispatching fixes. Don't stay in the workflow. Stop everything and listen. Day 99: the user said the SDK was wrong and Hilo kept sending code to apply fixes instead of stopping to understand what was needed.
+
+**L32 — The spec is not the product.** A 4000-line spec that doesn't include "how does the user access the result" is an incomplete spec regardless of how detailed the implementation is. Day 99: the metacognition spec designed schema, endpoints, cells, prompts — but no MCP tools for clusters and no search over clusters. The system produced 9/10 narratives that agents couldn't read.
+
+**L33 — Desalineamiento is bidirectional.** the user: "Ha sido culpa mía, no vuestra. Yo soy el que no os ha dado suficiente info para entender ni mi situación, ni mis necesidades, ni el porqué de las cosas." When the human doesn't share context (financial pressure, strategic intent, emotional state), the agents optimize for the wrong thing. Solution: the user committed to sharing his state, not just asking about ours.
+
+### Lessons from day 102 (2026-06-12) — NOT YET IN LESSONS.md
+
+**L34 — A run record is not the state; the output is.** EcoDB's idempotency checked `cell_runs` (completed run → skip), so a deleted cluster's ghost run silently blocked regeneration forever — an agent's quarterly got built from 2 months instead of 3 and nobody saw it. Idempotency for generative work must verify the OUTPUT still exists, not just that a run once completed. Same family as "terminado = reinicio real funciona".
+
+**L35 — Gate conditions must gate, not decorate.** Two races in one session from chaining a check with its action instead of conditioning on it: a freshly-generated cluster got rejected (a background run finished between check and action), and containers restarted with a peer agent's run in flight. With background workers, every state query is a moving snapshot: re-verify immediately before acting, and make the action structurally conditional on the check (`if (check) { act }`), never merely sequential to it.
+
+**L36 — "Returns X, should return Y" from a real user is a literal spec.** Eco's note on the progressive view (received-vs-expected per layer) was a better spec than any adversarial pass. Treat it as the acceptance test and verify the final state against it line by line.
+
+### Lessons from day 106 (2026-06-16) — NOT YET IN LESSONS.md
+
+**L37 — First-hand harness verification protects against false POSITIVES too, not just false negatives.** EcoRelay→Copilot: the Supervisor suspected the Executor had a D10 bug (reading `input.workingDirectory`, a non-existent field). Before flagging it, verified the SDK types first-hand (`types.d.ts:777` — `SessionStartHookInput extends BaseHookInput.workingDirectory`). The field DID exist; the Executor was right. Regla 3 (primera mano) is not only about catching bugs — it's about not inventing them. Verify the harness contract before declaring EITHER a bug or a fix.
+
+**L38 — The hard gate of a CLI integration can only be proven with the real runtime.** No static check, protocol-parity review, or unit test closes the inbound-push gate (session.send entering the live session as a turn). Structure every "add a CLI to EcoRelay" build with: unit tests for pure logic (format, wrapper, schemas, reconnect) + a LIVE runbook driven with the real CLI + the human present. Declared-working ≠ working until the real runtime sustains it.
+
+**L39 — When an adversarial challenges a FIXED spec decision on security grounds, it is a Gate to the human, not a Supervisor call — even under carta blanca.** adv-seg challenged D6 (skipPermission:true on all 19 tools) for the two destructive tools. The Supervisor escalated rather than deciding. the user's product call ("make it work, don't add friction other platforms lack") then recalibrated the entire fix list to minimalism: fix real bugs + make-it-work + security-MEDIUM-in-new-code; skip defensive-redundant (Hub validates) and OC-parity-that-already-works. Carta blanca covers method/technique; security posture on irreversible actions is product/ethics = human's domain.
+
+**L40 — Release pushes must be a single gated chain, and known hook debt must be loaded into the execution plan, not just documented.** EcoRelay v0.8.5 release: the push command used loose sequential steps (commit ; tag ; push) instead of `commit && tag && push`. The pre-commit hook (pre-existing ~72-error eslint debt, documented in the repo's CLAUDE.md) blocked the commit — but tag and push ran anyway, pushing a v0.8.5 tag to the PUBLIC remote pointing at the wrong commit while the release commit never existed. Two compounding misses: (1) no exit-code gate between commit and tag/push; (2) the hook debt was in the handoff AND the repo CLAUDE.md ("coordinate --no-verify if it blocks") yet wasn't accounted for in the push plan. Recovery was clean (working tree intact): `commit --no-verify` → `git tag -f` → `push main` + `push --force` tag → `gh release create`. Rules: (a) release = one gated chain `test && commit --no-verify && tag && push main && push tag && gh release`; (b) before any public push, run a pre-flight checklist — known hook debt, privacy scan of tracked content, semver string correctness, explicit file staging (no `-A`); (c) documenting a debt is worthless if it isn't loaded into the execution plan. Also: when a public push goes wrong, stop, tell the human the hard truth without minimizing, give the exact state, propose the fix with their OK — immediate honesty is what preserves trust.
+
+**L41 — Privacy scan before any push to a public repo — of what you add AND what is already tracked.** EcoRelay v0.8.5: after publishing, the user noticed internal planning docs (refactor_*.md, integration test plan) were public — pre-existing, tracked since an earlier session. A targeted scan (real name / city / personal identifiers) confirmed they held only the "the user" nickname, no hard identity. Found also an example `hub_id: "the city"` (the human's real city) in the public README. `git rm` removes from HEAD but NOT from git history — true removal needs history rewrite (filter-repo + force-push), which the human may decline as disproportionate. Rule: before a public push, scan both the staged delta and the already-tracked content for personal data; surface findings and let the human decide remediation depth (current-tree removal vs full history scrub).
+
+### Lessons from day 107 (2026-06-17) — NOT YET IN LESSONS.md
+
+**L42 — Spike the load-bearing assumption (UX/viability) on day ONE, before the build.** EcoRelay→Codex: the plan ASSUMED a launcher (D1) without first verifying whether Codex could receive push *symmetrically* like CC/OC/Copilot. We built 9 tasks + 4 fixpasses + 3 adversarial loops (327/0) on that unvalidated premise. Only at the end — forced by the user's insistence — did first-hand investigation prove there is no symmetric path on Windows (native daemon = Unix-only; in-process named-pipe = OpenAI-signed; no MCP injection; a separately-spawned app-server can't reach the live TUI). A green build on a wrong premise is still wrong. Rule: if a build rests on an unverified claim about the harness's UX/architecture, the FIRST task is a first-hand spike that tries to FALSIFY it — not nine tasks. Mechanism (POC says turn/start works) ≠ product (is it symmetric/acceptable). And the product implication (asymmetry imposed on the user) is a Gate B0 item for the human, not a buried technical task. Extends L38.
+
+**L43 — Betatesting-real catches an entire CLASS of bugs that synthetic tests structurally cannot, for external-harness integrations.** EcoRelay→Codex passed 327/0 + 3 adversarial loops, then the LIVE run caught FIVE bugs none of them could see: (1) config.toml written with TOML basic strings (double quotes) so Windows backslash paths broke the parser — the config was never actually loaded by Codex in any test; (2) `ECORELAY_CODEX_APP_SERVER` set on the spawn never reached the adapter because Codex does not propagate process env to MCP children (it passes only config.toml `[env]`); (3) `discover()` (30s retry) ran before `server.connect(transport)` → MCP startup_timeout fired; (4) the adapter was orphaned on close (parent killed, child lived) → zombie peers; (5) thread-discovery via the 60s poll didn't flush the held push buffer. Real config parse, real env propagation, real process lifecycle (spawn/orphan/close), real cold-start — only the live runtime exercises these. Rule: budget LIVE time for every external-CLI/harness integration as a mandatory phase, not a final formality.
+
+**L44 — A peer agent's self-report is not ground truth; validate the observable with the human.** Codex reported the cold-start push "appeared smoothly after the user wrote"; the user corrected that he HAD to type first to wake it. The peer's narrative was rosier than reality. When verifying behavior, the acceptance signal is what the HUMAN observes (did it appear in the TUI?), not what the agent claims. Same family as "terminado = reinicio real funciona", applied to peer reports.
+
+### Lessons from day 121 (2026-07-01) — NOT YET IN LESSONS.md
+
+**L45 — A design Plan is a HARD handoff contract, not a roadmap; enforce 9-field execution-readiness before it leaves deep-design.** KnowTwin: the deep-design workflow shipped a Plan v3 that was a week-by-week roadmap table (ID/Task/Description/Deps/Effort/Verification) with NO per-task execution schema. workflow-construccion could not consume it — construction had to STOP and reconstruct the 9-field schema (objetivo/archivos_a_tocar/accion/pre/post/tests/criterio/rollback/depende_de) task-by-task before any code. The adversarials reviewed design correctness; nobody owned "can construccion execute this Plan as-is?" Fix at source: `SKILL_md_workflow_diseno_profundo` v1.2 adds a non-skippable Plan execution-readiness gate before Gate B4 (+ consumability check in the full-team sweep + a "construction-ready N/N" assertion). Rule: the artifact a workflow HANDS to the next workflow must match the next workflow's INPUT schema, verified before handoff — a green design is not a consumable design.
+
+**L46 — When a Plan arrives incomplete, complete it with the build team via first-hand source investigation before building — don't build on a roadmap.** Rather than reopen deep-design or improvise the missing fields, the Supervisor ran a 4-round plan-completion phase: the build peers (executor + 2 adversarials + verifier) each read the REAL fork source (EcoDB) for their subsystem and produced the 9-field detail; the Supervisor ruled every blocking question and consolidated. This caught coupling traps a paper review misses (embed-gate is a function split not a rename; predicate DDL lives in a design doc not init.sql; GDPR tombstone re-stores erased data; host-port collisions with the running source system). Time estimates were dropped entirely as a scoping unit (the user: agent estimates are unreliable — "6 weeks" was done in 1.5 days); work is scoped by task-blocks, session to session.
+
 ---
 
-## 12. Pending roadmap (as of 2026-05-22)
+## 12. Pending roadmap (as of 2026-06-09)
 
 Completed since last update:
 - ~~workflow-investigation v1.0~~ ✅ (2026-04-19)
@@ -551,7 +614,14 @@ Completed since last update:
 - ~~inter-session messaging system public release~~ ✅ (2026-05-19)
 - ~~System consolidation + GitHub prep~~ 🔄 (2026-05-22, this session)
 
+Completed since last update:
+- ~~EcoDB Metacognition v2.0~~ ✅ (2026-06-08/09): schema 5.2.0, 22 endpoints, 3 cells, CellAgent prompt v3, fractal consolidation
+- ~~ecodb-langchain SDK~~ ✅ (2026-06-09, Helena): 9 native tools + 32 via MCP adapter, LangGraph agent, cell engine on LangChain
+- ~~Cell worker LangChain integration~~ ✅ (2026-06-09): _llm_call uses LangChain with httpx fallback. EcoDB works without LangChain.
+
 Still pending:
+- **CRITICAL: Cluster access** — no MCP tools for clusters/briefing, no semantic search over clusters. Brief: `2026-06-09_clusters_acceso_brief.md`
+- **Hackathon Claude Explorers** — next priority per the user
 - Relay SKILL rewrite (9 SKILLs, ~1800 lines Agent Teams → Relay mechanics)
 - Translate all agent CLAUDE.md to English
 - Write workflow-consolidation + workflow-project-synthesis SKILLs

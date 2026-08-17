@@ -13,11 +13,13 @@ metadata:
   motivation_hardening: |
     Application of the workflow-construction v3 methodology to workflow-integration. v1 had valuable knowledge base (ComfyUI/ElevenLabs/MCPs errors) but lacked all v2/v3 discipline: literal prompts, explicit human gates, minimum Install Blueprint schema, cross-validation between Designer assumptions and external system reality, physical location, retrospective.
 tags:
-  - workflow/integracion
+  - workflow/integration
   - agent/designer
   - agent/executor
   - agent/verifier
   - agent/scribe
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Integration (v4 — Relay)
@@ -271,8 +273,6 @@ $FARO_ROOT/Sesiones/<YYYY-MM-DD>_<tech>_integracion/
 
 ## 2. Dependencies
 List with exact version and official source:
-- <dep1>: <version> — <docs url>
-- <dep2>: <version> — <docs url>
 
 ## 3. Installation plan (ordered steps)
 Each step:
@@ -287,7 +287,6 @@ Each step:
 - [ ] <functional criterion> verifiable with `<command + expected output>`
 
 ## 5. Known warnings
-- <warning> — origin: <knowledge base | official docs | inference>
 
 ## 6. Rollback
 Exact command to completely uninstall and return to pre-integration state.

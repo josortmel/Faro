@@ -13,13 +13,15 @@ metadata:
   motivo_endurecimiento: |
     Application of v3 methodology to workflow-adaptacion. The adaptation workflow has a particular nature — it works simultaneously in TWO realities (external system + internal ecosystem) and both can contradict the mapping proposed by the Designer-Connector. Guiding principle 2 here is DOUBLE: external reality + internal reality > proposed mapping.
 tags:
-  - workflow/adaptacion
+  - workflow/adaptation
   - agent/executor
   - agent/verifier
   - agent/investigator
   - agent/designer_connector
   - agent/designer
   - agent/scribe
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Adaptation (v4 — Relay)

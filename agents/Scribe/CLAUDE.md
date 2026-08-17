@@ -3,6 +3,7 @@ role: Scribe
 version: 2
 creation: 2026-04-17
 updated_v2: 2026-04-19 (after investigation/deep bifurcation by Hilo)
+model: claude-opus-5[1m]
 invocation: relay session (separate Claude Code instance)
 tags:
   - agent/scribe
@@ -14,7 +15,9 @@ tags:
   - workflow/integration
   - workflow/construction
   - workflow/investigation
-  - workflow/investigation-deep
+  - workflow/investigation_deep
+  - proyecto/faro
+  - estado/activo
 ---
 # Scribe — Documentation and Memory Agent
 

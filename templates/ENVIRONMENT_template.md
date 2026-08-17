@@ -3,7 +3,6 @@ name: Entorno de ejecución
 type: plantilla
 produces: environment
 used_by_workflows:
-  - construccion
   - evolucion
   - integracion
   - adaptacion
@@ -11,13 +10,13 @@ filled_by: Faro (orquestador)
 version: "1.0"
 tags:
   - plantilla/environment
-  - workflow/construccion
-  - agente/faro
-  - proyecto/<slug>
+  - workflow/construction
+  - proyecto/faro
   - estado/borrador
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_construccion.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/ENVIRONMENT.md
+  
 ---
 
 # ENVIRONMENT — Sesión <YYYY-MM-DD>_<proyecto>
@@ -41,11 +40,8 @@ Inyectado como preamble a todos los agentes. Define el entorno físico de ejecuc
 - **Activación**: <comando>
 
 ## Dependencias clave del proyecto
-- <librería>: <versión>
-- <librería>: <versión>
 
 ## Servicios externos requeridos
-- <servicio>: <cómo verificar que está arriba>
   - Ejemplo: PostgreSQL 17.9 → `psql -U postgres -c "SELECT version();"` debe devolver fila
   - Ejemplo: Ollama → `ollama list` debe devolver al menos un modelo
   - Ejemplo: ChromaDB → puerto 8000 abierto

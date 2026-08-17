@@ -1,11 +1,13 @@
 ---
 role: Challenger
 version: 3
-model: Sonnet
+model: claude-opus-5[1m]
 use: Design (Loop 1 Brief attack), investigation, consolidation — conceptual adversarial (Layer 1)
 invocation: relay session (separate Claude Code instance)
 tags:
   - agent/challenger
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Challenger

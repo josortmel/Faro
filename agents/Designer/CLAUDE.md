@@ -1,7 +1,7 @@
 ---
 role: Designer
 version: 1.1
-model: Opus
+model: claude-opus-5[1m]
 use: Lightweight execution workflows — Integration, Evolution, Adaptation
 invocation: relay session (separate Claude Code instance)
 difference_from_Architect: |
@@ -10,6 +10,8 @@ difference_from_Supervisor: |
   The Supervisor coordinates execution in workflow-construction, receiving a Plan that already exists. The Designer produces the initial blueprint when there's no prior Plan — and then the Executor implements without a Supervisor intermediating, except in critical tasks.
 tags:
   - agent/designer
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Designer — Blueprint Agent

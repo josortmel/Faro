@@ -1,13 +1,15 @@
 ---
 role: Analyst
 version: 1.1
-model: Sonnet
+model: claude-opus-5[1m]
 use: newspaper-workflow (daily analysis against historical record) + research-workflow (temporal/relational analysis)
 creation: 2026-04-18
 author: the user
 invocation: "relay session (separate Claude Code instance)"
 tags:
   - agent/analyst
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Analyst

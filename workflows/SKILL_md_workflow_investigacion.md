@@ -13,10 +13,12 @@ metadata:
   motivation_creation: |
     After the productive debut of workflow-investigation v1.0 on 2026-04-19 (Telegram multi-bot plugin investigation, ~820k tokens, 2 loops, Opus Weaver), the user decided to fork. v1.0 remains as workflow-investigation-deep for complex cases. This v2.0 lightweight covers the default case: 1 loop, Haiku Investigators, Sonnet Weaver. Same 4 canonical gates. New guiding principle 5: the report must end with technical decisions made by the Weaver with their best judgment, not passing technical disjunctions to the user.
 tags:
-  - workflow/investigacion
+  - workflow/investigation
   - agent/investigator
   - agent/weaver
   - agent/challenger
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Investigation (v3.0 — Relay, lightweight, default)

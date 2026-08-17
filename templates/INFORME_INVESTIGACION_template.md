@@ -9,13 +9,13 @@ filled_by: Tejedor
 version: "1.0"
 tags:
   - plantilla/informe
-  - workflow/investigacion
-  - agente/tejedor
-  - proyecto/<slug>
+  - workflow/investigation
+  - agent/weaver
   - estado/borrador
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_investigacion.md
   final_output: $FARO_ROOT/Informes/Investigacion/<YYYY-MM-DD>_<slug>.md
+  
 ---
 
 # Informe de Investigación — <Tema>
@@ -46,8 +46,6 @@ linked_to:
 
 ### Clarificaciones acordadas en Bisagra 0
 Si hubo clarificaciones, enumerarlas:
-- <clarificación 1>
-- <clarificación 2>
 
 ### Scope confirmado
 - **Dentro del scope**: <lista explícita>
@@ -94,7 +92,6 @@ URLs identificadas (mencionadas en otras fuentes) pero no accesibles por el Inve
   - Por qué se considera relevante: <1 frase>
 
 #### Dudas del Investigador (no resueltas en este loop)
-- <texto>
 
 ---
 
@@ -176,7 +173,6 @@ Lista completa de **todas** las URLs consumidas en este informe, agrupadas por l
 - <URL> — ...
 
 ### Fuentes inaccesibles relevantes (todas, cualquier loop)
-- <URL> — razón: <...> — referenciada por: <URL fuente verificable>
 
 ---
 

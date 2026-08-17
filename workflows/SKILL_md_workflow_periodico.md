@@ -18,6 +18,11 @@ metadata:
     Editor anti-stuck, but lacked explicit guiding principles, gates with literal options,
     literal dispatch prompts, cross-validation (sacred editorial criteria, Critic > Editor
     on reliability), aggregated retrospective (weekly/monthly — not per daily session).
+tags:
+  - workflow/newspaper
+  - proyecto/faro
+  - estado/completado
+  - estado/activo
 ---
 
 # Workflow: Newspaper (v3 — Relay)
@@ -80,7 +85,7 @@ I have loaded workflow-periodico v3.
 
 Mode: <"interactive" | "morning cron">
 Newspaper date: <YYYY-MM-DD>
-Output path: F:\obsidian\...\Periodico\<YYYY-MM-DD>.html
+Output path: $VAULT/...\Periodico\<YYYY-MM-DD>.html
 
 Pre-flight check:
 - Internet: OK
@@ -207,10 +212,10 @@ $FARO_ROOT/Sesiones\<YYYY-MM-DD>_periodico\
   ├── CONTRACT.md
   └── orchestration.md
 
-F:\obsidian\...\Periodico\
+$VAULT/...\Periodico\
   └── <YYYY-MM-DD>.html (final deliverable)
 
-F:\obsidian\...\Periodico\
+$VAULT/...\Periodico\
   └── <YYYY-MM-DD>_index.md (index note produced by Scribe)
 ```
 
@@ -380,7 +385,7 @@ Literal prompt with emphasis on guiding principle 2:
 
 Input: `periodico_<YYYY-MM-DD>.json` complete (edited + labeled + analyzed)
 Template: A (newspaper)
-Output: F:\obsidian\...\Periodico\<YYYY-MM-DD>.html
+Output: $VAULT/...\Periodico\<YYYY-MM-DD>.html
 
 Your task:
 1. Generate self-contained HTML (no external dependencies — inline CSS, no remote fonts).
@@ -408,7 +413,7 @@ Source JSON: <path>
 
 Your task is the backbone of the long-term system (guiding principle 5). Do all 4 things:
 
-1. **HTML archive**: already at `F:\obsidian\...\Periodico\<date>.html`. Confirm integrity.
+1. **HTML archive**: already at `$VAULT/...\Periodico\<date>.html`. Confirm integrity.
 
 2. **Index note in Obsidian**: `Periodico\<YYYY-MM-DD>_index.md` with:
    - Article list with link to HTML

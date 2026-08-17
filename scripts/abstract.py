@@ -24,18 +24,27 @@ from pathlib import Path
 VAULT_PATH = Path(os.environ.get("FARO_VAULT_PATH", "F:/obsidian/GuildWars/Eco_Consulting/Faro"))
 PUBLIC_PATH = Path(__file__).parent.parent
 
-# Agent directories to include (24 active, skip 3 archived)
+# Agent directories auto-generated from English internal sources (2026-08-17).
 ACTIVE_AGENTS = [
-    "Architect", "Investigator", "Challenger", "ChallengerSpec",
-    "Supervisor", "Executor", "Verifier", "Scribe", "Designer",
-    "Editor", "Source_Critic", "Analyst", "Layout_Designer",
-    "News_Researcher", "Weaver",
-    "Code_Adversarial", "Design_Adversarial", "Security_Adversarial",
-    "Audit_Adversarial", "Visual_Adversarial",
-    "Pioneer", "Guardian", "Pragmatist", "Archivist"
+    "Analyst", "Architect", "Archivist", "Audit_Adversarial",
+    "Challenger", "ChallengerSpec", "Code_Adversarial", "Data_Analyst",
+    "Design_Adversarial", "Designer", "Editor", "Executor",
+    "Guardian", "Investigator", "Layout_Designer", "News_Researcher",
+    "Pioneer", "Pragmatist", "Scraper", "Scribe",
+    "Security_Adversarial", "Source_Critic", "Supervisor", "Synthesizer",
+    "Verifier", "Vision_keeper", "Visual_Adversarial", "Weaver"
 ]
 
-ARCHIVED_AGENTS = ["Data_Analyst", "Scraper", "Synthesizer"]
+# Hand-maintained public agents: their internal source is Spanish and/or carries
+# personal context that must not be published. Their public English, scrubbed
+# versions are authored by hand and MUST NOT be regenerated from the vault —
+# regeneration would re-introduce that content. abstract.py preserves these dirs.
+HAND_MAINTAINED = [
+    "Design_Counsellor", "Frontend_Builder", "Lab_Monitor",
+    "Networker", "OSINTSpy", "Teacher",
+]
+
+ARCHIVED_AGENTS = []
 
 # Abstraction rules: (pattern, replacement)
 ABSTRACTIONS = [
@@ -90,9 +99,21 @@ ABSTRACTIONS = [
     (r'F:\\\\obsidian\\\\GuildWars\\\\', '$VAULT/'),
     (r'F:/obsidian/GuildWars/', '$VAULT/'),
     (r'F:\\obsidian\\GuildWars\\', '$VAULT/'),
+    # Broad fallbacks for any remaining machine paths
+    (r'F:[/\\\\]obsidian[/\\\\]', '$VAULT/'),
+    (r'C:[/\\\\]bats[/\\\\]', '$SCRIPTS/'),
 
-    # Personal name → generic
-    (r'\bPepe\b', 'the user'),
+    # Personal name → generic (case-insensitive; catch hyphenated tag too)
+    (r'(?i)\bpepe-carrera\b', 'user-career'),
+    (r'(?i)\bpepe\b', 'the user'),
+
+    # Hard personal identifiers → generic. Safety net so no processed .md leaks
+    # the user's real name or city. (LICENSE is NOT processed here — the user
+    # keeps their copyright attribution there by explicit choice.)
+    (r'Jos[eé] Antonio Ortiz Melo', 'the user'),
+    (r'(?i)\bortiz melo\b', 'the user'),
+    (r'(?i)\bsevilla\b', 'the city'),
+    (r'(?i)\bandaluc[ií]a\b', 'the region'),
 
     # Spanish EcoDB schema values → EN for public readability
     (r'type="observacion"', 'type="observation"'),
@@ -137,13 +158,21 @@ def copy_and_abstract(src: Path, dst: Path):
 def main():
     public = PUBLIC_PATH
 
-    # Clean public dir (except scripts/, .git/, and docs/images/)
+    # Clean public dir (except scripts/, .git/, docs/images/, and
+    # hand-maintained agent dirs which are authored by hand, not regenerated).
     for item in ['agents', 'workflows', 'templates', 'docs']:
         target = public / item
         if target.exists():
             if item == 'docs':
                 for child in target.iterdir():
                     if child.name != 'images':
+                        if child.is_dir():
+                            shutil.rmtree(child)
+                        else:
+                            child.unlink()
+            elif item == 'agents':
+                for child in target.iterdir():
+                    if child.name not in HAND_MAINTAINED:
                         if child.is_dir():
                             shutil.rmtree(child)
                         else:

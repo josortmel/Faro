@@ -9,6 +9,8 @@ model: Haiku
 invocation: relay session (separate Claude Code instance)
 tags:
   - agent/archivist
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Role — Archivist

@@ -8,10 +8,10 @@ filled_by: Auditor
 version: "1.0"
 tags:
   - plantilla/audit
-  - workflow/evolucion
-  - agente/auditor
-  - proyecto/<slug>
+  - workflow/evolution
+  - agent/auditor
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_evolucion.md
   final_output: $FARO_ROOT/Informes/Construcción/<YYYY-MM-DD>_<slug>.md
@@ -33,7 +33,6 @@ linked_to:
 
 ### Qué funciona (NO se debe perder — principio rector 2)
 Lista concreta con comando/test que lo valida:
-- <funcionalidad 1>: verificada con `<comando>` → output: <literal>
 - <funcionalidad 2>: verificada con `<comando>`
 - ...
 
@@ -82,7 +81,6 @@ Cada problema con evidencia concreta:
 Lista explícita de código/archivos intocables — aunque tengan aspecto mejorable:
 
 - <archivo/función>: razón — usado por <quién>, revisar solo tras coordinar con the user
-- <...>
 
 ## 6. Criterios de éxito global
 

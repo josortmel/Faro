@@ -1,8 +1,9 @@
 ---
 use: Agent Lead Documentation
 tags:
-  - Documentacion_ECO_CONSULTING
-  - Agente/lead
+  - proyecto/eco_consulting
+  - agent/lead
+  - estado/completado
 ---
 # Faro Glossary
 
@@ -21,6 +22,8 @@ This document is normative: if a workflow says something different, the workflow
 > **Updated 2026-04-27 (Hilo, reconciliation)**: major systemic change of 2026-04-26 led by Prima: migration of the 8 existing workflows to **v3/v4 relay** + creation of the **9th workflow `workflow-id`** (strategic). Total: **9 workflows**, **22 agents** (15 original + 4 Adversarials: Code/Design/Security/Audit + 3 Advisory Council: Pioneer/Guardian/Pragmatist). New mechanics: persistent relay peers via separate Claude Code instances + peer dispatch. Per-workflow and internal details live in the SKILLs — this glossary only acknowledges the change. If this document contradicts a SKILL on specifics, the SKILL wins.
 >
 > **Updated 2026-05-22 (Hilo, consolidation session)**: **Agent Teams → Relay** migration complete across all SKILLs and agent files. Added **Archivista (Archivist)** and **Adversarial_Gráfico (Visual_Adversarial)** → total **24 agents**. Added 2 new workflows: `workflow-consolidation` v1.0 and `workflow-project-synthesis` v1.0 → total **11 workflows**. Templates #20 (Project Synthesis) and #21 (Improvement Proposal) formalized. All agent CLAUDE.md files moved to `Agentes/<Role>/CLAUDE.md` subdirectory pattern. eco_memory + eco_graph unified into **EcoDB**.
+>
+> **Updated 2026-05-30 (the user, Vision_keeper design)**: Added **Vision_keeper** (Opus) → total **25 agents**. Transversal guardian of user product vision across all workflows. Two dedicated skills: `/vision-extraction` and `/vision-enforcement`.
 
 ---
 
@@ -93,7 +96,7 @@ which workflow would be appropriate to materialize it.
 
 ---
 
-## The 24 roles — what each does, when, and where it lives
+## The 25 roles — what each does, when, and where it lives
 
 > **Change 2026-04-26 (Prima)**: added 7 new roles to the ecosystem — 4 Adversarials (Code, Design, Security, Audit) and 3 from the I+D Advisory Council (Pioneer, Guardian, Pragmatist). The lower tables (code family + knowledge family) describe the 15 originals. The 7 new ones are documented in a separate table at the end of this section. **Exact detail of which workflow dispatches which new agent: see the corresponding workflow SKILL — operational source of truth**.
 >
@@ -193,11 +196,12 @@ If Faro launches the wrong workflow or confuses the roles → the workflow break
 
 **Council synthesis**: Prima (Lead) submits her vision draft to all three in parallel. Each reports their opinion. Prima synthesizes with **double vote** — if there's a 2-1, Prima breaks the tie. If it's 3-0 against Prima, she can maintain her position but must justify it explicitly to the user.
 
-**Synthesis roles** (1, new 2026-05-22):
+**Synthesis + transversal roles** (2, new 2026-05-22 / 2026-05-30):
 
 | Role | Workflow where it acts | What it does | CLAUDE.md |
 |---|---|---|---|
 | **Archivist** 🆕 | workflow-consolidation, workflow-project-synthesis | Reconstructs project archaeology from sessions, EcoDB memories, and git history. Feeds Weaver with structured historical context. | `Archivista/CLAUDE.md` |
+| **Vision_keeper** 🆕 (2026-05-30) | **All workflows** — manual invocation by the user | Barrier between the user and workflow output. Two modes: (A) interviews the user to co-create `vision_PLACEHOLDER.md` via `/vision-extraction`, (B) evaluates agent output against the vision via `/vision-enforcement`. Not adversarial — compares output to user intent, not to technical standards. Opus (so larger models can't confuse or outmaneuver it). | `Vision_keeper/CLAUDE.md` |
 
 **Relay mechanics (2026-05-22 update — replaces Agent Teams)**: persistent peers connect via separate Claude Code instances. Dispatch with dispatch task to <peer-name>. List active peers with discover available peer agents. Rename to known name with `relay_rename(new_name="...")`. Rooms for multi-team coordination: join coordination room. **No Agent() spawning — relay handles dispatch.**
 

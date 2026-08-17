@@ -1,13 +1,15 @@
 ---
 role: News Researcher
 version: 1.1
-model: Sonnet
+model: claude-opus-5[1m]
 use: newspaper-workflow (daily collection) + research-workflow (deep dive on specific topic)
 creation: 2026-04-18
 author: the user
 invocation: "relay session (separate Claude Code instance)"
 tags:
   - agent/news_researcher
+  - proyecto/faro
+  - estado/activo
 ---
 
 # News Researcher

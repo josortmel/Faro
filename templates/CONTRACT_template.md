@@ -3,16 +3,15 @@ name: Contrato de sesión (construcción)
 type: plantilla
 produces: contract
 used_by_workflows:
-  - construccion
   - evolucion
 filled_by: Faro (orquestador)
 version: "1.0"
 tags:
   - plantilla/contract
-  - workflow/construccion
-  - agente/faro
-  - proyecto/<slug>
+  - workflow/construction
+  - proyecto/faro
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_construccion.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/CONTRACT.md
@@ -77,13 +76,9 @@ STATUS: OK | NEEDS_VERIFIER | DISAGREEMENT_WITH_PLAN
 TASK: <N>
 ITERACION: <M>
 ARCHIVOS_MODIFICADOS:
-  - <ruta>: <lineas_antes> -> <lineas_despues>
 ACCIONES_EJECUTADAS:
-  - <comando o cambio literal>
 TESTS_OUTPUT:
-  - <comando>: <output literal>
 POST_CONDICIONES_VERIFICADAS:
-  - <condicion>: <comando usado> -> <resultado>
 LESSONS_NUEVAS: [<texto de lección a añadir a LESSONS.md>] | "ninguna"
 DISAGREEMENT: <solo si STATUS == DISAGREEMENT_WITH_PLAN>
   - descripcion: <conflicto detectado>
@@ -122,7 +117,6 @@ DEBT_ITEMS: (solo cuando verdict = APPROVE_WITH_DEBT)
 
 COVERAGE:
   - <criterio_de_exito 1>: <pass | fail | partial> — evidence: "<comando + output>"
-  - <criterio_de_exito 2>: <...>
 
 SPEC_DRIFT: [<diferencias respecto a objetivo del Plan>] | "ninguna"
 ASSERTS_FRAGILES: [<asserts que pasarían aunque el código estuviera roto>] | "ninguno"

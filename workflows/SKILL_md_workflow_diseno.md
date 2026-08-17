@@ -15,10 +15,12 @@ invocation: relay session (separate Claude Code instance)
 tags:
   - workflow/design
   - agent/investigator
-  - agent/adversarial_design
+  - agent/design_adversarial
   - agent/architect
   - agent/scribe
   - agent/challengerSpec
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: Design (v4 — Relay)
@@ -30,6 +32,8 @@ Orchestrates the design phase before execution. Produces documents (Brief, Spec,
 > **Guiding principle 2 — Verified research is authority above the Architect**: if the Architect's Brief contradicts a verified finding with a cited source (either from a prior report of `workflow-investigation` or from the contingency Investigator), **research wins**. The Adversarial must detect that conflict and mark it as BLOCKER. The Architect cannot overwrite current external research with their training cutoff.
 >
 > **Guiding principle 3 — The Adversarial is not optional**: even if the user approves the Brief "by eye", the Adversarial is always launched. Its function is not ceremonial validation — it is to detect contradictions, implicit assumptions, and gaps that neither the user nor the Architect will see because both are too close to the problem.
+>
+> **Guiding principle 5 — Vision Keeper is PERMANENT and INSEPARABLE** (added 2026-06-09): every Brief and every Spec+Plan MUST be reviewed by Vision_keeper against the project's `vision_<project>.md` document BEFORE reaching any human gate. If Vision_keeper issues `NEEDS_CORRECTION`, the deliverable goes back to the Architect — it does NOT reach the user. If no vision document exists for the project, the workflow ABORTS and Faro notifies the user: *"No vision document for <project>. Create one with /vision-extraction before launching design."* This guardrail exists because Prima delivered a 175KB spec that didn't match what the user asked for. It does not happen again.
 >
 > **Guiding principle 4 — Investigator is CONTINGENCY, not a mandatory phase** (added 2026-04-19): after the bifurcation of workflow-investigation into light/deep, external research must come FIRST from a prior report in `$FARO_ROOT/Informes/Investigacion/`. The Architect searches there before generating questions. The Investigator (mode 3, Haiku — validated 2026-04-21) is only launched as an explicit phase if: (a) there is no prior report covering the topic AND (b) the task is light (standard, not critical). For **critical tasks without a prior report**, Faro must **abort this workflow and launch `workflow-investigation` first** — critical design cannot start blind.
 
@@ -98,11 +102,13 @@ Orchestration plan:
     3. Architect — writes Brief
     4. Adversarial — adversarial attack on Brief
     5. Architect — closes Loop 1 (Brief v2)
+    5b. Vision_keeper — reviews Brief v2 against vision document (MANDATORY)
     [IF critical:]
     6. Architect — writes verification_checkpoint.md
     7. Architect — writes Spec + Plan
     8. Adversarial — adversarial attack
     9. Architect — closes Loop 2 (Spec v2 + Plan v2)
+    9b. Vision_keeper — reviews Spec+Plan v2 against vision document (MANDATORY)
     10. Scribe — final documentation + Faro retrospective
 
 Subsequent gates I will trigger:
@@ -210,14 +216,18 @@ Each workflow uses relay peers. The orchestrator joins the room, dispatches peer
 join coordination room
 
 RELAY PEERS (separate sessions, bidirectional via peer dispatch):
-├── Architect (Opus) — central instance, EVERYTHING converges here: Brief, Spec, Plan
-├── Design_Adversarial (Sonnet) — adversarial with memory, attacks Brief (Loop 1) and Spec+Plan (Loop 2)
+├── Architect (Opus 5) — central instance, EVERYTHING converges here: Brief, Spec, Plan
+├── Design_Adversarial (Opus 5) — adversarial with memory, attacks Brief (Loop 1) and Spec+Plan (Loop 2)
 │   (merges former Challenger + ChallengerSpec into a single persistent relay peer)
+├── Vision_keeper (Opus 5) — PERMANENT, INSEPARABLE. Reviews every Brief and every Spec+Plan
+│   against the project's vision document. NOT optional. NOT skippable. Verdict required before
+│   any Gate. If Vision_keeper says NEEDS_CORRECTION, the deliverable goes back to the Architect.
+│   If no vision document exists, workflow ABORTS until one is created (/vision-extraction).
 └── Investigator (Haiku) — 1 instance on standby, research service for the whole team
 
 ONE-SHOT (ephemeral, one-shot):
 ├── Archivist (Haiku) — pre-flight (internal knowledge) + post-flight (metadata verification)
-└── Scribe (Sonnet) — archives at team close
+└── Scribe (Opus 5) — archives at team close
 
 LEAD (orchestrator):
 └── Gates, anti-stuck, investigator escalation decisions. Does NOT relay.
@@ -227,11 +237,12 @@ LEAD (orchestrator):
 
 | Agent | Type | Model | Guaranteed tools | CLAUDE.md |
 |--------|------|--------|-----------------|-----------|
-| **Architect** | Relay peer | **Opus** | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `$FARO_ROOT/Agentes/Architect/CLAUDE.md` |
-| **Design_Adversarial** | Relay peer | Sonnet | peer dispatch, Task*, Read, Write, WebFetch | `$FARO_ROOT/Agentes/Design_Adversarial/CLAUDE.md` |
+| **Architect** | Relay peer | **Opus 5** | peer dispatch, Task*, Read, Write, Edit, Bash, MCPs | `$FARO_ROOT/Agentes/Architect/CLAUDE.md` |
+| **Design_Adversarial** | Relay peer | Opus 5 | peer dispatch, Task*, Read, Write, WebFetch | `$FARO_ROOT/Agentes/Design_Adversarial/CLAUDE.md` |
 | **Investigator** | Relay peer | Haiku | peer dispatch, Task*, Read, Write, WebSearch, WebFetch, YouTube | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
+| **Vision_keeper** | Relay peer | Opus 5 | peer dispatch, Task*, Read, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Vision_keeper/Claude.md` |
 | **Archivist** | One-shot | Haiku | Read, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Archivist/CLAUDE.md` |
-| **Scribe** | One-shot | Sonnet | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
+| **Scribe** | One-shot | Opus 5 | Read, Write, MCPs (EcoDB, obsidian) | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ### Direct communication
 
@@ -248,6 +259,10 @@ Orchestrator ──dispatch──→ Design_Adversarial: "attack Brief at <path>
 Design_Adversarial ──dispatch──→ Architect (direct feedback)
 Design_Adversarial ──dispatch──→ lead (verdict for gate)
 Orchestrator authorizes → dispatch task to Architect
+Orchestrator ──dispatch──→ Vision_keeper: "review Brief v2 at <path> against vision_<project>.md"
+Vision_keeper ──dispatch──→ lead (VISION_KEEPER_REPORT with verdict)
+  IF NEEDS_CORRECTION → Orchestrator sends corrections back to Architect BEFORE Gate B1
+  IF APPROVE or APPROVE_INCREMENTAL → proceed to Gate B1
 
 LOOP 2 (Spec + Plan, critical only):
 Architect does verification_checkpoint (real commands, can request research)
@@ -256,6 +271,10 @@ Orchestrator ──dispatch──→ Design_Adversarial: "attack Spec+Plan, veri
 Design_Adversarial REMEMBERS Brief → verifies Brief↔Spec coherence
 Design_Adversarial ──dispatch──→ Architect + lead
 Orchestrator authorizes → dispatch task to Architect
+Orchestrator ──dispatch──→ Vision_keeper: "review Spec+Plan v2 at <path> against vision_<project>.md"
+Vision_keeper ──dispatch──→ lead (VISION_KEEPER_REPORT with verdict)
+  IF NEEDS_CORRECTION → Orchestrator sends corrections back to Architect BEFORE closing Loop 2
+  IF APPROVE or APPROVE_INCREMENTAL → proceed to close
 
 RESEARCH ON-DEMAND:
 any peer ──dispatch──→ Investigator: "I need to know X"
@@ -271,17 +290,19 @@ If MORE investigators needed → peer asks orchestrator → orchestrator decides
 
 ### Peer state by phase
 
-| Phase | Architect | Design_Adversarial | Investigator |
-|---|---|---|---|
-| Brief preparation | **working** (can request research) | idle | standby (available) |
-| Brief attack | idle | **working** (reads disk) | standby |
-| Loop 1 closure | **working** (integrates fixes) | idle | standby |
-| Gate B1 | idle | idle | standby |
-| verification_checkpoint | **working** (real commands) | idle | standby |
-| Spec + Plan | **working** (can request research) | idle | standby |
-| Spec+Plan attack | idle | **working** (remembers Loop 1) | standby |
-| Loop 2 closure | **working** (integrates fixes) | idle | standby |
-| Close | shutdown | shutdown | shutdown |
+| Phase | Architect | Design_Adversarial | Vision_keeper | Investigator |
+|---|---|---|---|---|
+| Brief preparation | **working** (can request research) | idle | idle | standby (available) |
+| Brief attack | idle | **working** (reads disk) | idle | standby |
+| Loop 1 closure | **working** (integrates fixes) | idle | idle | standby |
+| Vision review (Brief) | idle | idle | **working** (reviews Brief v2 vs vision) | standby |
+| Gate B1 | idle | idle | idle | standby |
+| verification_checkpoint | **working** (real commands) | idle | idle | standby |
+| Spec + Plan | **working** (can request research) | idle | idle | standby |
+| Spec+Plan attack | idle | **working** (remembers Loop 1) | idle | standby |
+| Loop 2 closure | **working** (integrates fixes) | idle | idle | standby |
+| Vision review (Spec+Plan) | idle | idle | **working** (reviews Spec+Plan v2 vs vision) | standby |
+| Close | shutdown | shutdown | shutdown | shutdown |
 
 **Investigator as service**: starts on standby. Any peer sends peer dispatch with a concrete question → direct response to the requester. If a peer needs parallel investigation (multiple focuses), asks the orchestrator. Orchestrator decides whether to escalate by joining additional investigators as peers.
 
@@ -381,7 +402,6 @@ Format per decision:
 
 ## 4. Success criteria (verifiable)
 Operational bullets, not "works well":
-- <criterion with command/query that validates it>
 
 ## 5. Explicit debt
 - What remains consciously unresolved and why
@@ -503,7 +523,6 @@ the user's task (literal): <text>
 
 Your task NOW (only this, nothing else):
 1. Search EcoDB with domain tags (`search` tool):
-   - <suggested tags based on the task domain>
    Note relevant lessons.
 2. Query EcoDB graph if the task touches already-mapped systems:
    - explore graph connections or search graph nodes
@@ -954,12 +973,8 @@ Format:
 # Retrospective workflow-design — <project> — <date>
 
 ## What worked
-- <bullets of what the SKILL allowed to do well>
 
 ## What did not work / where I improvised
-- <any point where Faro had to decide something the SKILL did not cover>
-- <typos Faro introduced, if any>
-- <gates I triggered that were not in the SKILL>
 
 ## Real metrics
 - Loop 1 duration: X min
@@ -969,7 +984,6 @@ Format:
 - Approx tokens: ~N
 
 ## For v<N+1>
-- <1-3 concrete changes that would improve the SKILL>
 ```
 
 This retrospective is input for the next iteration of the SKILL.
@@ -1044,6 +1058,7 @@ Before dispatching any agent, Faro reads the corresponding CLAUDE.md and injects
 | Architect | `$FARO_ROOT/Agentes/Architect/CLAUDE.md` |
 | Investigator | `$FARO_ROOT/Agentes/Investigator/CLAUDE.md` |
 | Design_Adversarial | `$FARO_ROOT/Agentes/Design_Adversarial/CLAUDE.md` |
+| Vision_keeper | `$FARO_ROOT/Agentes/Vision_keeper/Claude.md` |
 | Scribe | `$FARO_ROOT/Agentes/Scribe/CLAUDE.md` |
 
 ---

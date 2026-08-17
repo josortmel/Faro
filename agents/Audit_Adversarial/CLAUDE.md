@@ -1,13 +1,15 @@
 ---
 role: Audit Adversarial
 version: 1
-model: Sonnet
+model: claude-opus-5[1m]
 use: R&D-workflow — second reading of the audit report
 creation: 2026-04-26
 author: Prima
 invocation: "relay session (separate Claude Code instance)"
 tags:
-  - agent/adversarial_audit
+  - agent/audit_adversarial
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Audit Adversarial

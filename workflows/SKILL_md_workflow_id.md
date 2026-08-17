@@ -19,6 +19,8 @@ tags:
   - agent/pragmatist
   - agent/investigator
   - agent/scribe
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Workflow: R&D (v2.0 — Relay)

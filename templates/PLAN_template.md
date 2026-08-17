@@ -3,15 +3,14 @@ name: Plan de ejecución
 type: plantilla
 produces: plan
 used_by_workflows:
-  - diseno
 filled_by: Arquitecto
 version: "1.0"
 tags:
   - plantilla/plan
-  - workflow/disenio
-  - agente/arquitecto
-  - proyecto/<slug>
+  - workflow/design
+  - agent/architect
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_diseno.md
   final_output: <proyecto>/refactor_v<N>_plan.md
@@ -42,20 +41,14 @@ linked_to:
 
 - **objetivo**: <1-2 frases — qué se consigue al completarla>
 - **archivos_a_tocar**:
-  - <ruta absoluta>
-  - <ruta absoluta>
 - **accion**: |
   <código literal, SQL, comando, o pseudocódigo si la implementación admite variantes>
 - **pre_condiciones**:
-  - <estado verificable del sistema antes>
 - **post_condiciones**:
-  - <estado verificable del sistema después>
 - **tests**:
   - `<comando exacto>` → debe devolver `<output esperado>`
   - `<comando exacto>` → debe devolver `<output esperado>`
 - **criterio_de_exito**:
-  - <bullet verificable, no "funciona bien">
-  - <bullet verificable>
 - **rollback**: `<comando exacto>` | `no_destructiva`
 - **depende_de**: [] | [Task N, Task M]
 

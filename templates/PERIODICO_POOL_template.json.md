@@ -8,10 +8,10 @@ filled_by: Investigador de Noticias
 version: "1.0"
 tags:
   - plantilla/periodico
-  - workflow/periodico
-  - agente/investigador_de_noticias
-  - proyecto/<slug>
+  - workflow/newspaper
+  - agent/news_researcher
   - estado/borrador
+  - estado/activo
 linked_to:
   skills: $FARO_ROOT/Skills/SKILL_md_workflow_periodico.md
   final_output: $FARO_ROOT/Sesiones/<sesion>/pool_noticias.json

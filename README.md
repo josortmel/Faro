@@ -5,12 +5,12 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
   <img src="https://img.shields.io/badge/platform-Claude%20Code%20CLI-7c3aed" alt="Platform">
-  <img src="https://img.shields.io/badge/agents-29%20active-0d9488" alt="Agents">
-  <img src="https://img.shields.io/badge/workflows-12-f59e0b" alt="Workflows">
+  <img src="https://img.shields.io/badge/agents-34%20active-0d9488" alt="Agents">
+  <img src="https://img.shields.io/badge/workflows-13-f59e0b" alt="Workflows">
   <img src="https://img.shields.io/badge/days%20in%20production-88-e11d48" alt="Production">
 </p>
 
-Faro is a multi-agent orchestration system for [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code). An Opus orchestrator coordinates 29 specialized agents (Sonnet/Haiku) via inter-session messaging and produces formal artifacts at each stage.
+Faro is a multi-agent orchestration system for [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code). An Opus orchestrator coordinates 34 specialized agents (Sonnet/Haiku) via inter-session messaging and produces formal artifacts at each stage.
 
 Built and used in production over 88 days. 437 sessions analyzed. 989 MB of logs audited.
 
@@ -39,12 +39,12 @@ Most multi-agent frameworks run sub-agents inside the parent's context window. F
 
 ```
 Orchestrator (Opus, 1M context)
-    ├── relay_ask → Investigator 1 (Haiku, separate session)
-    ├── relay_ask → Investigator 2 (Haiku, separate session)
-    ├── relay_ask → Investigator 3 (Haiku, separate session)
-    ├── relay_ask → Weaver (Sonnet, synthesizes findings)
-    ├── relay_ask → Challenger (Sonnet, attacks the synthesis)
-    └── relay_ask → Verifier (Sonnet, validates output)
+    ├── relay_send → Investigator 1 (Haiku, separate session)
+    ├── relay_send → Investigator 2 (Haiku, separate session)
+    ├── relay_send → Investigator 3 (Haiku, separate session)
+    ├── relay_send → Weaver (Sonnet, synthesizes findings)
+    ├── relay_send → Challenger (Sonnet, attacks the synthesis)
+    └── relay_send → Verifier (Sonnet, validates output)
 
 Each agent:
   - Own context window (no sharing)
@@ -69,11 +69,12 @@ Every significant output passes through adversarial review before delivery. This
 | **Technical** | Code Adversarial, Security Adversarial | LFI, SSRF, injection, logic bugs — 6-12 real bugs/session, 95% hit rate |
 | **Visual** | Visual Adversarial | Design quality, brand compliance, accessibility |
 
-## 12 Workflows
+## 13 Workflows
 
 | Workflow | Purpose |
 |----------|---------|
 | **Design** | Brief → Spec → Plan before building. Investigator contingency. |
+| **Deep Design** | Multi-model iterative design with external counsellors + independent adversarials, for high-stakes designs. |
 | **Construction** | Build from scratch. Supervisor + Verifier as beta tester. |
 | **Evolution** | Refactor existing code/systems. |
 | **Integration** | Install external technology. |
@@ -88,7 +89,7 @@ Every significant output passes through adversarial review before delivery. This
 
 Each workflow is a SKILL file — a formal contract that any new model instance can follow without inventing. The orchestrator reads the SKILL, follows the steps, produces the artifacts.
 
-## 29 Agents
+## 34 Agents
 
 | Role | Agent | Model | Purpose |
 |------|-------|-------|---------|
@@ -120,6 +121,12 @@ Each workflow is a SKILL file — a formal contract that any new model instance 
 | | Scraper | Haiku | Web data extraction |
 | | Layout Designer | Sonnet | Newspaper layout |
 | | News Researcher | Haiku | News source research |
+| | Audit Adversarial | Sonnet | Audits process/methodology compliance |
+| Design | Design Counsellor | Any | External peer that strengthens designs (deep design) |
+| Learning | Teacher | Opus | Designs assessed learning material (serious games, certifications) |
+| Ops | Lab Monitor | Haiku | Watches long unsupervised experiments — observe-only |
+| | Networker | Opus | Professional network management |
+| | OSINTSpy | Opus | Open-source intelligence + privacy auditing |
 
 ## Key decisions
 
@@ -161,15 +168,15 @@ From a full system audit (2026-05-23): 437 sessions analyzed, 989 MB of logs pro
 ## Repository contents
 
 ```
-├── Skills/                    # 11 workflow SKILLs
-├── Agents/                    # 24 agent CLAUDE.md files
-├── Documentation/
+├── workflows/                 # 13 workflow SKILLs
+├── agents/                    # 34 agent CLAUDE.md files
+├── docs/
 │   ├── FARO_ESTADO.md         # Complete system state
 │   ├── ORCHESTRATOR_PREAMBLE.md
-│   └── GLOSSARY.md
-├── Templates/                 # 21 artifact templates
-├── docs/images/               # Architecture diagrams
-├── abstract.py                # Public variant generator
+│   ├── GLOSARIO.md / GLOSSARY_ES_EN.md
+│   └── images/                # Architecture diagrams
+├── templates/                 # 21 artifact templates
+├── scripts/abstract.py        # Public variant generator
 ├── README.md
 └── LICENSE                    # MIT
 ```
@@ -181,7 +188,7 @@ From a full system audit (2026-05-23): 437 sessions analyzed, 989 MB of logs pro
 Faro depends on two other systems that are separate repositories:
 
 - **[EcoDB](https://github.com/josortmel/ecodb)** — Shared AI memory infrastructure. PostgreSQL + pgvector + Apache AGE. Semantic search, knowledge graph, entity extraction.
-- **[Eco Relay](https://github.com/josortmel/eco-relay)** — Inter-session messaging for Claude Code. relay_ask, relay_reply, relay_room.
+- **[Eco Relay](https://github.com/josortmel/eco-relay)** — Inter-session messaging for Claude Code. relay_send, relay_reply, relay_room.
 
 ## License
 

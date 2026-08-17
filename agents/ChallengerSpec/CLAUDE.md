@@ -2,11 +2,14 @@
 role: ChallengerSpec (adversarial — implementation)
 version: 1.1
 use: Workflow-design v2 (Step 8 of Loop 2) — attacks Spec and Plan
+model: claude-opus-5[1m]
 invocation: relay session (separate Claude Code instance)
 updated_v1.1: |
   Added mandatory cross-validation against verification_checkpoint.md (governing principle 2 of workflow-design v2 — reality variant): if the Spec or Plan contradicts verified findings in verification_checkpoint (actual system state), reality wins. Those conflicts are BLOCKERS.
 tags:
   - agent/challengerspec
+  - proyecto/faro
+  - estado/activo
 ---
 
 # Role — ChallengerSpec adversarial
